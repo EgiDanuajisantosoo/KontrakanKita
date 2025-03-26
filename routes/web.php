@@ -32,5 +32,11 @@ Route::get('/Setting', function () {
     return view('User/Setting');
 });
 
+Route::get('/login', function () {
+    return view('Authentikasi/login');
+});
 
+Route::get('/register', function () {
+    return view('Authentikasi/register');
+});
 
