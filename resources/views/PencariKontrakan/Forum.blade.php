@@ -2,13 +2,13 @@
     <x-slot:title>Dashboard</x-slot:title>
     <x-slot:content>
         <div class="content">
-            <div class="headerContent bg-[#003A9D] min-h-[20vh]">
+            <div class="headerContent bg-[#003A9D] min-h-[20vh] md:relative">
                 <h1 class="text-white p-5 text-3xl font-bold mb-4">Temukan partner yang cocok dengan anda!</h1>
-                <div class="search flex p-5 items-center gap-5 mb-4 w-[80px] md:w-xl">
+                <div class="search grid grid-cols-3 md:flex p-5 items-center gap-1 mb-4 w-auto md:w-xl">
                     <input type="text" placeholder="Cari berdasarkan lokasi, nama kontrakan..."
-                        class="flex-1 bg-white p-2 border rounded-lg">
+                        class="col-start-1 col-end-3 bg-white p-2 border rounded-lg">
                     <button class="p-2 text-white border-2 border-white rounded-lg">Filter</button>
-                    
+                    <button class="p-2 text-white border-2 border-white rounded-lg w-[130px] md:absolute md:button-0 md:right-7">Tambah Forum</button>
                 </div>
             </div>
 

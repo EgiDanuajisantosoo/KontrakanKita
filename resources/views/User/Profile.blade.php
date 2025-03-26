@@ -7,11 +7,11 @@
         <div class="flex justify-center justify-items-center pt-25 overflow-x-hidden min-w-screen">
             <div class=" w-full max-w-4xl">
                 <div class="flex mt-5 gap-3 justify-items-start pl-5 sm:pl-[25%] md:pl-[20%] mb-2">
-                    <h1 class="text-[12px] sm:text-xl md:text-2xl font-bold text-blue-900 ">Alexander Frederichsen</h1>
+                    <h1 class="text-[12px] sm:text-xl md:text-2xl font-bold text-blue-900 ">Hatake Kakashi</h1>
                     {{-- <p class="text-[12px] md:text-xl mt-2">|</p> --}}
-                    <p class="text-[12px] sm:text-sm sm:mt-1 md:text-sm md:mt-2 border-l-2 pl-2 pr-2 border-r-2 border-black">Dogi University</p>
+                    <p class="text-[12px] sm:text-sm sm:mt-1 md:text-sm md:mt-2 border-l-2 pl-2 pr-2 border-r-2 border-black">Konoha University</p>
                     {{-- <p class="text-[12px] md:text-xl mt-2">|</p> --}}
-                    <p class="text-[12px] sm:text-sm sm:mt-1 md:text-sm md:mt-2">Pemilik Kontrakan</p>
+                    <p class="text-[12px] sm:text-sm sm:mt-1 md:text-sm md:mt-2">Pencari Kontrakan</p>
                 </div>
                 <!-- Kartu Profil -->
                 <div
@@ -27,7 +27,7 @@
                                 <p class="flex items-center justify-center sm:justify-start"><span class="mr-2">📞</span>
                                     081237654789</p>
                                 <p class="flex items-center justify-center sm:justify-start"><span class="mr-2">✉️</span>
-                                    cutedogy1113@dogemail.com</p>
+                                    haaKakashi@gemail.com</p>
                                 <p class="flex items-center justify-center sm:justify-start"><span class="mr-2">📍</span>
                                     Bandung, Jawa Barat, Indonesia, 40111</p>
                             </div>
@@ -47,10 +47,9 @@
                     <div class=" p-6 text-center">
                         <p class="text-lg italic text-gray-700">""</p>
                         <p class="text-gray-600 mt-2">
-                            Halo! Aku Alexander, mahasiswa Dogi University yang ahli dalam menggonggong manis dan mencuri
+                            Halo! aaaAku Hatake Kakashi, mahasiswa Konoha University yang ahli dalam mencuri
                             hati.
-                            Hidupku penuh dengan lari-lari, camilan enak, dan tidur siang berkualitas. Siap menyebarkan
-                            kebahagiaan ke sekeliling! 🐾
+                            Hidupku penuh dengan Cobaan yang siap dicobain Gannn🐾
                         </p>
                         <p class="text-lg italic text-gray-700 mt-2">""</p>
                     </div>

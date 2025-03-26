@@ -5,7 +5,7 @@
 
     <x-slot:content>
 
-        <div class="w-full h-screen bg-cover bg-center bg-no-repeat shadow-lg"
+        <div class="w-full h-screen bg-cover bg-center bg-no-repeat shadow-lg overflow-hidden"
             style="background-image: url('{{ asset('Assets/rumah/charming-yellow-house-with-wooden-windows-green-grassy-garden.jpg') }}'); background-size: cover;">
 
             <div class="text-justify pt-[13%] pl-[5%]">
