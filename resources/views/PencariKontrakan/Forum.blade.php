@@ -8,6 +8,7 @@
                     <input type="text" placeholder="Cari berdasarkan lokasi, nama kontrakan..."
                         class="flex-1 bg-white p-2 border rounded-lg">
                     <button class="p-2 text-white border-2 border-white rounded-lg">Filter</button>
+                    
                 </div>
             </div>
 
