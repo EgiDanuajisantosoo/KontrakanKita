@@ -46,6 +46,15 @@
                     <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
                     <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
                     <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
+
+                    @if (Auth::check())
+                    <form action="{{route('auth.logout')}}" method="post">
+                        @csrf
+                        <button type="submit" class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
+                    </form>
+                    @else
+                    <a href="/auth" class="block text-center px-4 py-2 text-gray-500 hover:bg-gray-100">Login</a>
+                    @endif
                 </div>
             </div>
 

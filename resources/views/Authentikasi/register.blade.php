@@ -33,7 +33,7 @@
 </head>
 
 <body class="flex justify-center items-center bg-gray-100 h-screen poppins-regular md:p-16 ">
-    <div id="leftBlue" class="flex flex-col md:flex-row md:rounded-lg md:overflow-hidden shadow-lg bg-white w-full h-full max-w-8xl">
+    <div id="leftBlue" class="hidden flex flex-col md:flex-row md:rounded-lg md:overflow-hidden shadow-lg bg-white w-full h-full max-w-8xl">
         <div class="w-full md:w-1/2 bg-blue-600 text-white flex items-center justify-center flex-col p-6">
             <h1 class="text-2xl sm:text-3xl font-bold mb-4">Selamat Datang!</h1>
             <p class="mb-6 text-center">Daftar untuk menikmati fitur terbaik kami</p>
@@ -51,24 +51,28 @@
                 </button>
             </div>
             <p class="text-center my-3">atau menggunakan emailmu untuk registrasi</p>
-            <form id="registerForm" class="text-center">
-                <p class="text-left text-lg">Nama</p>
-                <input type="text" id="name" class="w-full p-2 px-4 border-2 border-black rounded-full"
+
+            <form id="registerForm" class="text-center" action="{{ route('auth.register') }}" method="POST">
+                @csrf
+                <p class="text-left text-lg">Username</p>
+                <input type="text" name="username" id="name" class="w-full p-2 px-4 border-2 border-black rounded-full"
                     required>
                 <p class="mt-5 text-left text-lg">Email</p>
-                <input type="email" id="email" class="w-full p-2 px-4 border-2 border-black rounded-full"
+                <input type="email" name="email" id="email" class="w-full p-2 px-4 border-2 border-black rounded-full"
                     required>
                 <p class="mt-5 text-left text-lg">Password</p>
-                <input type="password" id="password" class="w-full p-2 px-4 border-2 border-black rounded-full"
+                <input type="password" name="password" id="password" class="w-full p-2 px-4 border-2 border-black rounded-full"
                     required>
-                <button type="submit"
+                <p class="mt-5 text-left text-lg">Konfirmasi Password</p>
+                <input type="password" name="confirm_password" id="confirm_password" class="w-full p-2 px-4 border-2 border-black rounded-full" required>
+                <button type="submit" na
                     class="px-16 py-4 my-5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200">SIGN
                     UP</button>
             </form>
         </div>
     </div>
 
-    <div id="rightBlue" class="hidden flex flex-col md:flex-row md:rounded-lg md:overflow-hidden shadow-lg bg-white w-full h-full max-w-8xl">
+    <div id="rightBlue" class=" flex flex-col md:flex-row md:rounded-lg md:overflow-hidden shadow-lg bg-white w-full h-full max-w-8xl">
         <div class="w-full md:w-1/2 p-6 sm:p-10 md:p-20 flex flex-col justify-center">
             <h2 class="text-xl sm:text-2xl mb-4 mt-6 text-center poppins-bold">Login</h2>
             <div class="flex items-center justify-center mb-4">
@@ -78,12 +82,13 @@
                 </button>
             </div>
             <p class="text-center my-5">atau sudah memiliki akun?</p>
-            <form id="loginForm" class="text-center">
-                <p class="mb-1 text-left text-lg">Email</p>
-                <input type="email" id="email" class="w-full p-2 px-4 border-2 border-black rounded-full"
+            <form id="loginForm" class="text-center" action="{{ route('auth.login') }}" method="POST">
+                @csrf
+                <p class="mb-1 text-left text-lg">Email Or Username</p>
+                <input type="email" name="user" id="email" class="w-full p-2 px-4 border-2 border-black rounded-full"
                     required>
                 <p class="mt-5 mb-1 text-left text-lg">Password</p>
-                <input type="password" id="password" class="w-full p-2 px-4 border-2 border-black rounded-full"
+                <input type="password" name="password" id="password" class="w-full p-2 px-4 border-2 border-black rounded-full"
                     required>
                 <p class="text-sm text-center my-5 font-semibold cursor-pointer">Lupa Password?</p>
                 <button type="submit"
@@ -100,7 +105,17 @@
                 onclick="toggleRegister()">SIGN UP</button>
         </div>
     </div>
+    <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
 
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Password dan Konfirmasi Password harus sama!');
+        }
+    });
+    </script>
     <script>
         function toggleLogin() {
             document.getElementById("leftBlue").classList.add("hidden");

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 
 Route::get('/', function () {
     return view('index');
@@ -32,11 +33,8 @@ Route::get('/Setting', function () {
     return view('User/Setting');
 });
 
-Route::get('/login', function () {
-    return view('Authentikasi/login');
-});
-
-Route::get('/register', function () {
-    return view('Authentikasi/register');
-});
+Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
+Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
