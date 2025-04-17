@@ -45,10 +45,10 @@
         <div class="w-full md:w-1/2 p-6 sm:p-10 md:p-20 flex flex-col justify-center">
             <h2 class="text-xl sm:text-2xl mb-4 mt-6 text-center poppins-bold">Register</h2>
             <div class="flex items-center justify-center mb-4">
-                <button
+                <a href="{{ route('auth.google') }}"
                     class="w-10 h-10 sm:w-12 sm:h-12 border border-gray-300 text-gray-700 flex items-center justify-center transition duration-200 hover:bg-gray-200 font-bold text-xl rounded-full">
                     G
-                </button>
+            </a>
             </div>
             <p class="text-center my-3">atau menggunakan emailmu untuk registrasi</p>
 
@@ -76,10 +76,10 @@
         <div class="w-full md:w-1/2 p-6 sm:p-10 md:p-20 flex flex-col justify-center">
             <h2 class="text-xl sm:text-2xl mb-4 mt-6 text-center poppins-bold">Login</h2>
             <div class="flex items-center justify-center mb-4">
-                <button
+                <a href="{{ route('auth.google') }}"
                     class="w-10 h-10 sm:w-12 sm:h-12 border border-gray-300 text-gray-700 flex items-center justify-center transition duration-200 hover:bg-gray-200 font-bold text-xl rounded-full">
                     G
-                </button>
+            </a>
             </div>
             <p class="text-center my-5">atau sudah memiliki akun?</p>
             <form id="loginForm" class="text-center" action="{{ route('auth.login') }}" method="POST">

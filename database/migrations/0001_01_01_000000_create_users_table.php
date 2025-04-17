@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->enum('role', ['admin', 'pemilik', 'pencari'])->default('pencari');
+            $table->string('google_id')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
 

@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -32,17 +35,8 @@ class AuthController extends Controller
 
 
         auth()->login($user);
-        // dd($user);
         return redirect('/')->with('success', 'Login successful.');
-        // dd($request->all());
 
-        // $credentials = $request->only('email', 'password');
-
-        // if (auth()->attempt($credentials)) {
-        //     return redirect()->route('home')->with('success', 'Login successful.');
-        // }
-
-        // return redirect()->back()->withErrors(['user' => 'Invalid credentials.']);
     }
 
 
@@ -68,13 +62,56 @@ class AuthController extends Controller
                 $user->save();
             }
 
-        return redirect()->route('auth.login')->with('success', 'Registration successful. Please log in.');
+        return redirect()->route('auth.index')->with('success', 'Registration successful. Please log in.');
     }
 
     public function logout(Request $request)
     {
         auth()->logout();
         return redirect('/')->with('success', 'Logout successful.');
+    }
+
+    public function authGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+{
+    $googleUser = Socialite::driver('google')->stateless()->user();
+
+    $user = User::where('email', $googleUser->getEmail())->first();
+
+    if (!$user) {
+        $user = User::create([
+            'email' => $googleUser->getEmail(),
+            'username' => $this->generateUsername($googleUser),
+            'google_id' => $googleUser->getId(),
+            'avatar' => $googleUser->getAvatar(),
+        ]);
+    } else {
+        $user->update([
+            'google_id' => $googleUser->getId(),
+            'avatar' => $googleUser->getAvatar(),
+        ]);
+    }
+
+    Auth::login($user);
+    return redirect('/');
+}
+
+
+
+    private function generateUsername($googleUser) {
+        $base = Str::slug($googleUser->getName());
+        $username = $base;
+        $i = 1;
+
+        while (User::where('username', $username)->exists()) {
+            $username = $base . $i++;
+        }
+
+        return $username;
     }
 
 
