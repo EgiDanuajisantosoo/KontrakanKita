@@ -2,24 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\KontrakanController;
+use App\Http\Controllers\RekomendasiController;
+use App\Http\Controllers\ProfileController;
 use App\Models\User;
+use App\Models\Fasilitas;
 use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/Kontrakan', function () {
-    return view('PencariKontrakan/Kontrakan');
-});
+// Route::get('/Kontrakan', function () {
+//     return view('PencariKontrakan/Kontrakan');
+// });
+Route::get('/Kontrakan', [KontrakanController::class, 'index'])->name('kontrakan.index');
 
 Route::get('/Forum', function () {
     return view('PencariKontrakan/Forum');
-});
-
-
-Route::get('/Profile', function () {
-    return view('User/Profile');
 });
 
 
@@ -28,7 +29,8 @@ Route::get('/DetailKontrakan', function () {
 });
 
 Route::get('/KelolaKontrakan', function () {
-    return view('PemilikKontrakan/KelolaKontrakan');
+    $fasilitas = Fasilitas::all();
+    return view('PemilikKontrakan/KelolaKontrakan', compact('fasilitas'));
 });
 
 Route::get('/Setting', function () {
@@ -38,6 +40,8 @@ Route::get('/Setting', function () {
 Route::get('/auth/redirect/google', function () {
     return Socialite::driver('google')->redirect();
 });
+
+
 
 // Route::get('/auth/callback/google', function () {
 //     $googleUser = Socialite::driver('google')->stateless()->user();
@@ -54,11 +58,35 @@ Route::get('/auth/redirect/google', function () {
 
 //     return redirect('/');
 // });
+
+Route::get('/formGalery', function () {
+    return view('User.formGalery');
+});
+
+Route::get('formPemilik', function () {
+    $fasilitas = Fasilitas::all();
+    return view('PemilikKontrakan.formPemilik', compact('fasilitas'));
+});
+
+//Auth Routes
 Route::get('/google', [AuthController::class, 'authGoogle'])->name('auth.google');
 Route::get('/auth/callback/google', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
-
 Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+//rekomendasi lokasi
+Route::get('/rekomendasi-lokasi', [RekomendasiController::class, 'rekomendasiLokasi']);
+
+//Profile user
+Route::get('/Profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::post('/tambahGalery', [ProfileController::class, 'galery'])->name('profile.galery');
+Route::post('/createProfile', [ProfileController::class, 'create'])->name('profile.create');
+
+//tambah kontrakan
+Route::post('/tambahKontrakan', [KontrakanController::class, 'store'])->name('kontrakan.store');
+
+
+
 

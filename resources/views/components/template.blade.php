@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     @vite('resources/css/app.css')
     <title>{{ $title }}</title>
     <style>
@@ -14,6 +16,7 @@
         border-bottom: 3px solid #003A9D;
     }
     </style>
+
     {{-- <style>
         /* .navbar-transparent {
             opacity: 0;

@@ -37,25 +37,33 @@
             </div> --}}
 
 
-             <!-- Profile Button (Desktop) -->
-             <div class="relative">
-                <button id="desktopDropdownButton" class="hidden md:flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100 focus:outline-none">
-                    Profile
-                </button>
-                <div id="desktopDropDown" class="hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
-                    <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
-                    <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
-                    <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
+            <!-- Profile Button (Desktop) -->
+            <div class="relative">
+                @if (Auth::check())
+                    <button id="desktopDropdownButton"
+                        class="hidden md:flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100 focus:outline-none">
+                        Profile
+                    </button>
+                    <div id="desktopDropDown"
+                        class="hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
+                        <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
+                        <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola
+                            Kontrakan</a>
+                        <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
 
-                    @if (Auth::check())
-                    <form action="{{route('auth.logout')}}" method="post">
-                        @csrf
-                        <button type="submit" class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
-                    </form>
-                    @else
-                    <a href="/auth" class="block text-center px-4 py-2 text-gray-500 hover:bg-gray-100">Login</a>
-                    @endif
-                </div>
+                        @if (Auth::check())
+                            <form action="{{ route('auth.logout') }}" method="post">
+                                @csrf
+                                <button type="submit"
+                                    class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
+                            </form>
+                        @else
+                        @endif
+                    </div>
+                @else
+                    <a href="/auth" class="block text-center px-4 py-2 text-gray-500 mt-2 hover:bg-gray-100">Login</a>
+                @endif
+
             </div>
 
             <div class="md:hidden flex items-center">
@@ -69,9 +77,9 @@
         </div>
 
 
-            <!-- Mobile Menu Button -->
+        <!-- Mobile Menu Button -->
 
-        </div>
+    </div>
     </div>
     <!-- Mobile Menu -->
     {{-- <div id="mobile-nav" class="hidden md:hidden">
@@ -97,8 +105,8 @@
         </div>
     </div> --}}
 
-     <!-- Mobile Menu -->
-     <div id="mobile-nav" class="hidden md:hidden bg-white shadow-md">
+    <!-- Mobile Menu -->
+    <div id="mobile-nav" class="hidden md:hidden bg-white shadow-md">
         <a href="/" class="block py-2 px-4 text-sm hover:bg-gray-200">Beranda</a>
         <a href="/Kontrakan" class="block py-2 px-4 text-sm hover:bg-gray-200">Kontrakan</a>
         <a href="/Forum" class="block py-2 px-4 text-sm hover:bg-gray-200">Partner</a>
@@ -106,13 +114,24 @@
 
         <!-- Profile Dropdown in Mobile -->
         <div class="relative">
-            <button id="mobileDropdownButton" class="w-full text-left py-2 px-4 text-sm hover:bg-gray-200 focus:outline-none">
+            <button id="mobileDropdownButton"
+                class="w-full text-left py-2 px-4 text-sm hover:bg-gray-200 focus:outline-none">
                 Lainnya
             </button>
-            <div id="mobileDropDown" class="hidden text-sm absolute w-full bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
+            <div id="mobileDropDown"
+                class="hidden text-sm absolute w-full bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
                 <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
                 <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
                 <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Setting</a>
+                @if (Auth::check())
+                    <form action="{{ route('auth.logout') }}" method="post">
+                        @csrf
+                        <button type="submit"
+                            class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
+                    </form>
+                @else
+                    <a href="/auth" class="block text-center px-4 py-2 text-gray-500 hover:bg-gray-100">Login</a>
+                @endif
             </div>
         </div>
     </div>
@@ -143,34 +162,36 @@
         }
 
         // Handle Dropdown for Desktop
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const desktopDropdownButton = document.getElementById("desktopDropdownButton");
             const desktopDropDown = document.getElementById("desktopDropDown");
 
-            desktopDropdownButton.addEventListener("click", function (event) {
+            desktopDropdownButton.addEventListener("click", function(event) {
                 event.stopPropagation();
                 desktopDropDown.classList.toggle("hidden");
             });
 
-            document.addEventListener("click", function (event) {
-                if (!desktopDropdownButton.contains(event.target) && !desktopDropDown.contains(event.target)) {
+            document.addEventListener("click", function(event) {
+                if (!desktopDropdownButton.contains(event.target) && !desktopDropDown.contains(event
+                        .target)) {
                     desktopDropDown.classList.add("hidden");
                 }
             });
         });
 
         // Handle Dropdown for Mobile
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const mobileDropdownButton = document.getElementById("mobileDropdownButton");
             const mobileDropDown = document.getElementById("mobileDropDown");
 
-            mobileDropdownButton.addEventListener("click", function (event) {
+            mobileDropdownButton.addEventListener("click", function(event) {
                 event.stopPropagation();
                 mobileDropDown.classList.toggle("hidden");
             });
 
-            document.addEventListener("click", function (event) {
-                if (!mobileDropdownButton.contains(event.target) && !mobileDropDown.contains(event.target)) {
+            document.addEventListener("click", function(event) {
+                if (!mobileDropdownButton.contains(event.target) && !mobileDropDown.contains(event
+                        .target)) {
                     mobileDropDown.classList.add("hidden");
                 }
             });

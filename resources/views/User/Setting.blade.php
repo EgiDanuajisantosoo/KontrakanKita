@@ -27,15 +27,23 @@
                     </div>
                     <a href="#" class="text-blue-500 text-sm font-medium hover:underline">Edit</a>
                 </div>
+                <div class="flex justify-between items-center py-3 border-b border-gray-300">
+                    @if (Auth::user()->role == 'pencari')
+                    <p class="text-sm font-bold text-gray-500">Daftar Sebagai Pemilik Kontrakan</p>
+                    <a href="/formPemilik" class="text-blue-500 text-sm font-medium hover:underline">Ajukan</a>
+                    @elseif (Auth::user()->role == 'pemilik')
+                    <p class="text-sm font-bold text-gray-500">Anda telah terdaftar sebagai Pemilik Kontrakan</p>
+                    @endif
+                </div>
 
                 <!-- Hapus Akun -->
-                <div class="flex justify-between items-center py-4">
+                {{-- <div class="flex justify-between items-center py-4">
                     <div>
                         <p class="text-sm text-gray-500">Hapus Akun</p>
 
                     </div>
                     <a href="#" class="text-red-500 text-sm font-medium hover:underline">Hapus</a>
-                </div>
+                </div> --}}
             </div>
         </div>
 

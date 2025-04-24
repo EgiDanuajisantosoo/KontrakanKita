@@ -22,8 +22,14 @@ return new class extends Migration
             $table->integer('kamar_tidur');
             $table->integer('kamar_mandi');
             $table->string('ukuran_properti');
-            $table->text('fasilitas')->nullable();
-            $table->enum('status', ['pending', 'diterima', 'ditolak'])->default('pending');
+            $table->text('fasilitas_tambahan')->nullable();
+            $table->string('provinsi');
+            $table->string('kota');
+            $table->string('kecamatan');
+            $table->string('kelurahan');
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
+            $table->enum('status', ['pending', 'diterima', 'ditolak','tersedia'])->default('pending');
             $table->timestamps();
         });
     }
