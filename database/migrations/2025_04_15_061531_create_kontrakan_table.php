@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('provinsi');
             $table->string('kota');
             $table->string('kecamatan');
+            $table->string('banner')->nullable();
             $table->string('kelurahan');
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);

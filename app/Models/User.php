@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Kontrakan::class);
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_users')->withTimestamps();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

@@ -11,7 +11,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $dataUser = Profile::where('id', auth()->user()->id)->first();
+        $dataUser = Profile::where('user_id', auth()->user()->id)->first();
 
         $galery = $dataUser ? GaleryProfile::where('profile_id', $dataUser->id)->get() : collect();
         // dd($dataUser);
@@ -29,6 +29,7 @@ class ProfileController extends Controller
 
     public function create(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nama' => 'required|string|max:255',
             'no_telp' => 'required|string|max:20',
@@ -43,37 +44,37 @@ class ProfileController extends Controller
             'kode_pos' => 'required|string|max:10',
             // 'gallery' => 'required',
             // 'gallery.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'tahun_lahir' => 'required|date|before:today',
+            'tahun_lahir' => 'required|date',
         ]);
 
-    if ($request->hasFile('fotoProfile')) {
-        $fotoProfilePath = $request->file('fotoProfile')->store('foto_profile', 'public');
-    }
 
-    // dd($request->all());
+        // dd($request->all());
 
-    // if ($request->hasFile('gallery')) {
-    //     foreach ($request->file('gallery') as $image) {
-    //         $galleryPath = $image->store('galleryUser', 'public');
-    //     }
-    // }
+        // if ($request->hasFile('gallery')) {
+            //     foreach ($request->file('gallery') as $image) {
+                //         $galleryPath = $image->store('galleryUser', 'public');
+                //     }
+                // }
+                if ($request->hasFile('fotoProfile')) {
+                    $fotoProfilePath = $request->file('fotoProfile')->store('foto_profile', 'public');
+                }
 
-        // Save the profile data to the database
-        $profile = new Profile();
-        $profile->user_id = auth()->user()->id;
-        $profile->nama = $request->input('nama');
-        $profile->no_telepon = $request->input('no_telp');
-        $profile->deskripsi = $request->input('deskripsi');
-        $profile->jenis_kelamin = $request->input('jenis_kelamin');
-        $profile->instansi = $request->input('instansi');
-        $profile->foto_profile = $fotoProfilePath ?? null;
-        $profile->tanggal_lahir = $request->input('tahun_lahir');
-        $profile->provinsi = $request->input('provinsi');
-        $profile->kota = $request->input('kota');
-        $profile->kecamatan = $request->input('kecamatan');
-        $profile->kelurahan = $request->input('kelurahan');
-        $profile->kode_pos = $request->input('kode_pos');
-        $profile->save();
+                // Save the profile data to the database
+                $profile = new Profile();
+                $profile->user_id = auth()->user()->id;
+                $profile->nama = $request->input('nama');
+                $profile->no_telepon = $request->input('no_telp');
+                $profile->deskripsi = $request->input('deskripsi');
+                $profile->jenis_kelamin = $request->input('jenis_kelamin');
+                $profile->instansi = $request->input('instansi');
+                $profile->foto_profile = $fotoProfilePath ?? null;
+                $profile->tanggal_lahir = $request->input('tahun_lahir');
+                $profile->provinsi = $request->input('provinsi');
+                $profile->kota = $request->input('kota');
+                $profile->kecamatan = $request->input('kecamatan');
+                $profile->kelurahan = $request->input('kelurahan');
+                $profile->kode_pos = $request->input('kode_pos');
+                $profile->save();
 
 
         // if ($request->hasFile('gallery')) {
@@ -86,7 +87,7 @@ class ProfileController extends Controller
         // }
 
         // dd($request->all());
-        return redirect()->back()->with('success', 'Profile created successfully.');
+        return redirect()->route('profile.index')->with('success', 'Profile created successfully.');
     }
 
 
@@ -109,5 +110,15 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile.index')->with('success', 'Gallery created successfully.');
+    }
+
+    public function editProfile()
+    {
+        $profile = Profile::where('user_id', auth()->user()->id)->first();
+        return view('admin.settings.profile', compact('profile'));
+    }
+
+    public function editPassword(){
+        return view('admin.settings.password');
     }
 }

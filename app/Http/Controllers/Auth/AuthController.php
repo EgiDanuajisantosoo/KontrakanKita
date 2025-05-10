@@ -29,13 +29,17 @@ class AuthController extends Controller
             ->orWhere('email', $request->user)
             ->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)  ) {
             return redirect()->back()->withErrors(['user' => 'Invalid credentials.']);
         }
 
-
-        auth()->login($user);
-        return redirect('/')->with('success', 'Login successful.');
+        if($user->role == 'admin'){
+            auth()->login($user);
+            return redirect('/dashboard')->with('success', 'Login successful.');
+        }else{
+            auth()->login($user);
+            return redirect('/')->with('success', 'Login successful.');
+        }
 
     }
 
@@ -62,7 +66,7 @@ class AuthController extends Controller
                 $user->save();
             }
 
-        return redirect()->route('auth.index')->with('success', 'Registration successful. Please log in.');
+        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
     }
 
     public function logout(Request $request)
@@ -95,8 +99,15 @@ class AuthController extends Controller
         ]);
     }
 
-    Auth::login($user);
+    if ($user->role == 'admin') {
+        Auth::login($user);
+        return redirect('/dashboard')->with('success', 'Login successful.');
+    }else{
+        Auth::login($user);
     return redirect('/');
+    }
+
+
 }
 
 

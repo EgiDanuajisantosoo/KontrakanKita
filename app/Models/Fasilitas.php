@@ -18,4 +18,9 @@ class Fasilitas extends Model
     {
         return $this->hasMany(FasilitasUmum::class);
     }
+
+    public function kontrakans(): BelongsToMany
+    {
+        return $this->belongsToMany(Kontrakan::class, 'fasilitas_umum', 'fasilitas_id', 'kontrakan_id');
+    }
 }

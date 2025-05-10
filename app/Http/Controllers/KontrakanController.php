@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Kontrakan;
 use App\Models\GaleryKontrakan;
+use App\Models\FasilitasUmum;
 use App\Models\User;
 
 class KontrakanController extends Controller
 {
     public function index()
     {
-        $kontrakan = Kontrakan::all();
+        $kontrakan = Kontrakan::where('status', 'tersedia')->get();
         return view('PencariKontrakan.Kontrakan', compact('kontrakan'));
     }
 
@@ -34,6 +35,7 @@ class KontrakanController extends Controller
         'kamar_mandi' => 'required|integer',
         'ukuran_properti' => 'required|string',
         'foto_kontrakan.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'foto_banner' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         'provinsi' => 'required|string',
         'kota' => 'required|string',
         'kecamatan' => 'required|string',
@@ -45,6 +47,10 @@ class KontrakanController extends Controller
         'fasilitas_tambahan' => 'nullable|string',
     ]);
 
+    if ($request->hasFile('foto_banner')) {
+        // $galleryPath = $image->store('galleryKontrakan', 'public');
+        $galleryPath = $request->file('foto_banner')->store('galleryKontrakan', 'public');
+    }
 
     $kontrakan = new Kontrakan();
     $kontrakan->user_id = auth()->user()->id;
@@ -60,6 +66,7 @@ class KontrakanController extends Controller
     $kontrakan->kota = $request->kota;
     $kontrakan->kecamatan = $request->kecamatan;
     $kontrakan->kelurahan = $request->kelurahan;
+    $kontrakan->banner = $galleryPath;
     $kontrakan->latitude = $request->latitude;
     $kontrakan->longitude = $request->longitude;
     $kontrakan->fasilitas_tambahan = $request->fasilitas_tambahan;
@@ -77,6 +84,7 @@ class KontrakanController extends Controller
         }
     }
 
+
     if ($request->has('fasilitas')) {
         $kontrakan->fasilitasUmum()->sync($request->fasilitas);
     }
@@ -91,11 +99,22 @@ class KontrakanController extends Controller
 }
 
 
-public function show($id)
+public function showNonForum($id)
 {
-    $detailKontrakan = Kontrakan::findOrFail($id);
-    $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->get();
-    return view('Kontrakan.show', compact('detailKontrakan', 'fasilitasUmum'));
+    $type = 'nonForum';
+    $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
+    $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
+    // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
+    return view('User.DetailKontrakan', compact('detailKontrakan', 'galleryKontrakan', 'type'));
+}
+
+public function showForum($id)
+{
+    $type = 'forum';
+    $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
+    $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
+    // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
+    return view('User.DetailKontrakan', compact('detailKontrakan', 'galleryKontrakan', 'type'));
 }
 
     public function edit($id)

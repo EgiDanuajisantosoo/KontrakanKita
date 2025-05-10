@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-md fixed w-full z-10">
+<nav class="bg-white shadow-md fixed w-full z-50 pb-2">
     <div class="max-w-screen mx-auto px-7">
         <div class="flex justify-between">
             <!-- Logo -->
@@ -13,7 +13,7 @@
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Beranda</a>
                 <a href="/Kontrakan"
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Kontrakan</a>
-                <a href="/Forum"
+                <a href="/forums"
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Partner</a>
                 <a href=""
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Tentang
@@ -47,8 +47,11 @@
                     <div id="desktopDropDown"
                         class="hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
                         <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
+                        @if (Auth::user()->role == 'pemilik')
                         <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola
                             Kontrakan</a>
+                        @endif
+
                         <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
 
                         @if (Auth::check())
@@ -61,7 +64,7 @@
                         @endif
                     </div>
                 @else
-                    <a href="/auth" class="block text-center px-4 py-2 text-gray-500 mt-2 hover:bg-gray-100">Login</a>
+                    <a href="/auth" class="hidden md:block lg:block text-center px-4 py-2 text-gray-500 mt-2 hover:bg-gray-100">Login</a>
                 @endif
 
             </div>
@@ -109,7 +112,7 @@
     <div id="mobile-nav" class="hidden md:hidden bg-white shadow-md">
         <a href="/" class="block py-2 px-4 text-sm hover:bg-gray-200">Beranda</a>
         <a href="/Kontrakan" class="block py-2 px-4 text-sm hover:bg-gray-200">Kontrakan</a>
-        <a href="/Forum" class="block py-2 px-4 text-sm hover:bg-gray-200">Partner</a>
+        <a href="/forums" class="block py-2 px-4 text-sm hover:bg-gray-200">Partner</a>
         <a href="" class="block py-2 px-4 text-sm hover:bg-gray-200">Tentang Kita</a>
 
         <!-- Profile Dropdown in Mobile -->
@@ -121,7 +124,10 @@
             <div id="mobileDropDown"
                 class="hidden text-sm absolute w-full bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
                 <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
+                @if (Auth::user()->role == 'pemilik')
+
                 <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
+                @endif
                 <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Setting</a>
                 @if (Auth::check())
                     <form action="{{ route('auth.logout') }}" method="post">

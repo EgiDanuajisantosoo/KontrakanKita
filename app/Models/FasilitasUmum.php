@@ -16,8 +16,13 @@ class FasilitasUmum extends Model
         'kontrakan_id',
     ];
 
-    public function kontrakans(): BelongsToMany
+    public function fasilitas(): BelongsTo
     {
-        return $this->belongsToMany(Kontrakan::class, 'fasilitas_umum', 'fasilitas_id', 'kontrakan_id');
+        return $this->belongsTo(Fasilitas::class, 'fasilitas_id');
+    }
+
+    public function kontrakan(): BelongsTo
+    {
+        return $this->belongsTo(Kontrakan::class, 'kontrakan_id');
     }
 }

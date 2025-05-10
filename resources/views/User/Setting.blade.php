@@ -14,19 +14,24 @@
                 <div class="flex justify-between items-center py-3 border-b  border-gray-300">
                     <div>
                         <p class="text-sm text-gray-500">Email</p>
-                        <p class="font-semibold">evankeane15@gmail.com</p>
+                        <p class="font-semibold">{{$user->email}}</p>
                     </div>
                     <a href="#" class="text-blue-500 text-sm font-medium hover:underline">Edit</a>
                 </div>
 
                 <!-- Kata Sandi -->
+                @if (Auth::user()->password == null)
+                @else
                 <div class="flex justify-between items-center py-3 border-b border-gray-300">
                     <div>
+                        {{-- <p class="font-semibold text-gray-600">Silahkan set password</p> --}}
                         <p class="text-sm text-gray-500">Kata Sandi</p>
                         <p class="font-semibold">********</p>
+
                     </div>
                     <a href="#" class="text-blue-500 text-sm font-medium hover:underline">Edit</a>
                 </div>
+                @endif
                 <div class="flex justify-between items-center py-3 border-b border-gray-300">
                     @if (Auth::user()->role == 'pencari')
                     <p class="text-sm font-bold text-gray-500">Daftar Sebagai Pemilik Kontrakan</p>

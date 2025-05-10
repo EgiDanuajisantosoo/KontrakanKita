@@ -7,6 +7,7 @@ export default defineConfig({
     //   host: '192.168.1.14',
     //   port: 3000,
     // },
+    
     plugins: [
       laravel({
         input: ['resources/css/app.css', 'resources/js/app.js'],

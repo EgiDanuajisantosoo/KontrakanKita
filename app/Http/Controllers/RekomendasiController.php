@@ -8,26 +8,49 @@ use Illuminate\Support\Facades\DB;
 class RekomendasiController extends Controller
 {
     public function getNearbyKontrakan($userLat, $userLng, $radius)
-    {
-        return DB::table('kontrakan')
-            ->where('status', 'tersedia')
-            ->select(
-                '*',
-                DB::raw("(
-                    6371 * acos(
-                        cos(radians($userLat)) *
-                        cos(radians(latitude)) *
-                        cos(radians(longitude) - radians($userLng)) +
-                        sin(radians($userLat)) * sin(radians(latitude))
-                    )
-                ) AS distance")
-            )
-            ->having('distance', '<=', $radius)
-            ->orderBy('distance', 'asc')
-            ->get();
-    }
+{
+    return DB::table('kontrakan')
+        ->where('status', 'tersedia')
+        ->select(
+            '*',
+            DB::raw("
+                (6371 * acos(
+                    cos(radians(?)) *
+                    cos(radians(latitude)) *
+                    cos(radians(longitude) - radians(?)) +
+                    sin(radians(?)) * sin(radians(latitude))
+                )) AS distance
+            ")
+        )
+        ->addBinding([$userLat, $userLng, $userLat], 'select')
+        ->having('distance', '<=', $radius)
+        ->orderBy('distance', 'asc')
+        ->get();
+}
 
-    public function rekomendasiLokasi(Request $request)
+public function getNearbyForum($userLat, $userLng, $radius)
+{
+    return DB::table('groups')
+        ->where('status', 'tersedia')
+        ->select(
+            '*',
+            DB::raw("
+                (6371 * acos(
+                    cos(radians(?)) *
+                    cos(radians(latitude)) *
+                    cos(radians(longitude) - radians(?)) +
+                    sin(radians(?)) * sin(radians(latitude))
+                )) AS distance
+            ")
+        )
+        ->addBinding([$userLat, $userLng, $userLat], 'select')
+        ->having('distance', '<=', $radius)
+        ->orderBy('distance', 'asc')
+        ->get();
+}
+
+
+    public function rekomendasiKontrakan(Request $request)
 {
     $userLat = $request->input('latitude');
     $userLng = $request->input('longitude');
@@ -40,5 +63,17 @@ class RekomendasiController extends Controller
     return response()->json($rekomendasiKontrakan);
 }
 
+public function rekomendasiForum(Request $request)
+{
+    $userLat = $request->input('latitude');
+    $userLng = $request->input('longitude');
+    $radius = $request->input('radius', 5);
+
+    // dd($userLat, $userLng, $radius);
+    $rekomendasiKontrakan = $this->getNearbyForum($userLat, $userLng, $radius);
+
+    // return view('PencariKontrakan.Kontrakan', compact('rekomendasiKontrakan'));
+    return response()->json($rekomendasiKontrakan);
+}
 
 }

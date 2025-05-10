@@ -28,6 +28,7 @@ class Kontrakan extends Model
         'latitude',
         'longitude',
         'fasilitas_tambahan',
+        'banner',
     ];
 
     public function user()
@@ -37,7 +38,12 @@ class Kontrakan extends Model
 
     public function galeryProfile()
     {
-        return $this->hasMany(GaleryProfile::class);
+        return $this->hasMany(GaleryProfile::class, 'kontrakan_id');
+    }
+
+    public function fasilitas(): BelongsToMany
+    {
+        return $this->belongsToMany(Fasilitas::class, 'fasilitas_umum', 'kontrakan_id', 'fasilitas_id');
     }
 
     public function forum()
