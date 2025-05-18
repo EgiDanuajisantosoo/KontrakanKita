@@ -17,7 +17,7 @@ class ProfileController extends Controller
         $galery = $dataUser ? GaleryProfile::where('profile_id', $dataUser->id)->get() : collect();
         // dd($dataUser);
 
-        return view('User.profile' , compact('dataUser','galery'));
+        return view('User.Profile' , compact('dataUser','galery'));
     }
 
     public function update(Request $request)
