@@ -4,67 +4,67 @@
             Profile
         </x-slot:title>
         <x-slot:content>
-            <div class="px-64 py-24">
+            <div class="px-4 py-8 sm:px-8 md:px-16 lg:px-32 xl:px-64">
                 <div class="shadow-2xl">
-                    <div class="p-12 rounded-tl-2xl rounded-tr-2xl" style="background: #003A9D ">
+                    <div class="p-6 sm:p-8 md:p-12 rounded-tl-2xl rounded-tr-2xl" style="background: #003A9D ">
                         <h2 class="font-semibold text-2xl text-white ">Tambah Profile</h2>
                     </div>
-                    <form class="p-12 flex-col" action="{{ route('profile.create') }}" method="post"
+                    <form class="p-6 sm:p-8 md:p-12 flex flex-col" action="{{ route('profile.create') }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="flex-1 py-2">
-                            <label class="font-semibold text-gray-600 py-2" class="font-semibold text-gray-600 py-2"
-                                for="nama">Nama : </label>
+                            <label class="font-semibold text-gray-600 py-2" for="nama">Nama : </label>
                             <input
-                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2"
                                 type="text" name="nama" id="nama" required>
                         </div>
                         <div class="flex-1 py-2">
                             <label class="font-semibold text-gray-600 py-2" for="no_telp">No_Telp : </label>
                             <input
-                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2"
                                 type="text" name="no_telp" id="no_telp" required>
                         </div>
                         <div class="flex-1 py-2">
                             <label class="font-semibold text-gray-600 py-2" for="deskripsi">Deskripsi : </label>
                             <input
-                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2"
                                 type="text" name="deskripsi" id="deskripsi" required>
                         </div>
                         <div class="flex-1 py-2">
                             <label class="font-semibold text-gray-600 py-2" for="jenis_kelamin">Jenis Kelamin : </label>
-                            <br>
-
-                            <input class="text-xs" type="radio" name="jenis_kelamin" id="jenis_kelamin" value="L"
-                                required> Laki-laki
-                            <input class="text-xs" type="radio" name="jenis_kelamin" id="jenis_kelamin" value="P"
-                                required> Perempuan
+                            <div class="flex items-center gap-4 mt-2">
+                                <label class="flex items-center text-xs">
+                                    <input class="mr-1" type="radio" name="jenis_kelamin" value="L" required> Laki-laki
+                                </label>
+                                <label class="flex items-center text-xs">
+                                    <input class="mr-1" type="radio" name="jenis_kelamin" value="P" required> Perempuan
+                                </label>
+                            </div>
                         </div>
                         <div class="flex-1 py-2">
                             <label class="font-semibold text-gray-600" for="instansi">Instansi : </label>
                             <input
-                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2"
                                 type="text" name="instansi" id="instansi" required>
                         </div>
                         <div class="flex-1 py-2">
                             <label class="font-semibold text-gray-600 py-2" for="fotoProfile">Foto Profile :</label>
                             <input
-                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2"
                                 type="file" name="fotoProfile" id="fotoProfile" required>
                         </div>
                         <div class="flex-1 py-2">
                             <label class="font-semibold text-gray-600 py-2" for="tahun_lahir">Tahun Lahir : </label>
                             <input
-                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs"
                                 type="date" name="tahun_lahir" id="tahun_lahir" required>
                         </div>
 
                         <div class="col-span-2">
                             <label class="block text-gray-700 font-semibold mb-2">Alamat</label>
-                            <div class="md:flex md:row md:space-x-4 w-full text-xs">
+                            <div class="flex flex-col md:flex-row md:space-x-4 w-full text-xs">
                                 <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Provinsi:<abbr
-                                            title="required">*</abbr></label>
+                                    <label class="font-semibold text-gray-600 py-2">Provinsi:<abbr title="required">*</abbr></label>
                                     <select
                                         class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                                         name="provinsi" id="provinsi" required>
@@ -75,8 +75,7 @@
                                     @enderror
                                 </div>
                                 <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kabupaten/Kota:<abbr
-                                            title="required">*</abbr></label>
+                                    <label class="font-semibold text-gray-600 py-2">Kabupaten/Kota:<abbr title="required">*</abbr></label>
                                     <select
                                         class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                                         name="kota" id="kota" required>
@@ -87,10 +86,9 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="md:flex md:row md:space-x-4 w-full text-xs">
+                            <div class="flex flex-col md:flex-row md:space-x-4 w-full text-xs">
                                 <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kecamatan:<abbr
-                                            title="required">*</abbr></label>
+                                    <label class="font-semibold text-gray-600 py-2">Kecamatan:<abbr title="required">*</abbr></label>
                                     <select
                                         class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                                         name="kecamatan" id="kecamatan" required>
@@ -101,8 +99,7 @@
                                     @enderror
                                 </div>
                                 <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kelurahan/Desa<abbr
-                                            title="required">*</abbr></label>
+                                    <label class="font-semibold text-gray-600 py-2">Kelurahan/Desa<abbr title="required">*</abbr></label>
                                     <select
                                         class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
                                         name="kelurahan" id="kelurahan" required>
@@ -113,8 +110,7 @@
                                     @enderror
                                 </div>
                                 <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kode Pos<abbr
-                                            title="required">*</abbr></label>
+                                    <label class="font-semibold text-gray-600 py-2">Kode Pos<abbr title="required">*</abbr></label>
                                     <input type="text" name="kode_pos" id="kode_pos"
                                         class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4">
                                     @error('kode_pos')
@@ -124,15 +120,14 @@
                             </div>
                         </div>
 
-                        <div class="button-group flex justify-end pt-6 mx-auto block gap-2" style="margin: auto">
-                            <button class="px-10 py-3 font-bold rounded-md text-white" style="background: #003A9D"
+                        <div class="button-group flex flex-col sm:flex-row justify-end pt-6 gap-2">
+                            <button class="px-8 py-3 font-bold rounded-md text-white" style="background: #003A9D"
                                 type="submit">Simpan</button>
-                            <button class="px-10 py-3 bg-red-700 font-bold rounded-md text-white"
+                            <button class="px-8 py-3 bg-red-700 font-bold rounded-md text-white"
                                 type="reset">Reset</button>
                         </div>
-
                     </form>
-                    <div class="p-12 rounded-bl-2xl rounded-br-2xl" style="background: #003A9D"></div>
+                    <div class="p-6 sm:p-8 md:p-12 rounded-bl-2xl rounded-br-2xl" style="background: #003A9D"></div>
                 </div>
             </div>
 

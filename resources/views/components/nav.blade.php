@@ -55,7 +55,7 @@
                         <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
 
                         @if (Auth::check())
-                            <form action="{{ route('auth.logout') }}" method="post">
+                            <form action="{{ route('auth.logout') }}" method="POST">
                                 @csrf
                                 <button type="submit"
                                     class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
@@ -113,7 +113,7 @@
         <a href="/" class="block py-2 px-4 text-sm hover:bg-gray-200">Beranda</a>
         <a href="/Kontrakan" class="block py-2 px-4 text-sm hover:bg-gray-200">Kontrakan</a>
         <a href="/forums" class="block py-2 px-4 text-sm hover:bg-gray-200">Partner</a>
-        <a href="" class="block py-2 px-4 text-sm hover:bg-gray-200">Tentang Kita</a>
+        {{-- <a href="" class="block py-2 px-4 text-sm hover:bg-gray-200">Tentang Kita</a> --}}
 
         <!-- Profile Dropdown in Mobile -->
         <div class="relative">
@@ -129,7 +129,7 @@
                 @endif
                 <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Setting</a>
                 @if (Auth::check())
-                    <form action="{{ route('auth.logout') }}" method="post">
+                    <form action="{{ route('auth.logout') }}" method="POST">
                         @csrf
                         <button type="submit"
                             class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
