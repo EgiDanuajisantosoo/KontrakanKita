@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Kontrakan;
 use App\Models\GaleryKontrakan;
 use App\Models\FasilitasUmum;
+use App\Models\Booking;
 use App\Models\User;
+use App\Models\Fasilitas;
+use App\Models\Group;
 
 class KontrakanController extends Controller
 {
     public function index()
     {
         $kontrakan = Kontrakan::where('status', 'tersedia')->get();
+
         return view('PencariKontrakan.Kontrakan', compact('kontrakan'));
     }
 
@@ -23,99 +27,153 @@ class KontrakanController extends Controller
     }
 
     public function store(Request $request)
-{
-    // dd($dataUser);
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'alamat' => 'required|string|max:255',
-        'harga' => 'required|numeric',
-        'deskripsi' => 'required|string',
-        'tipe_properti' => 'required|string',
-        'kamar_tidur' => 'required|integer',
-        'kamar_mandi' => 'required|integer',
-        'ukuran_properti' => 'required|string',
-        'foto_kontrakan.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        'foto_banner' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        'provinsi' => 'required|string',
-        'kota' => 'required|string',
-        'kecamatan' => 'required|string',
-        'kelurahan' => 'required|string',
-        'latitude' => 'required|numeric',
-        'longitude' => 'required|numeric',
-        'fasilitas' => 'array',
-        'fasilitas.*' => 'exists:fasilitas,id',
-        'fasilitas_tambahan' => 'nullable|string',
-    ]);
+    {
 
-    if ($request->hasFile('foto_banner')) {
-        // $galleryPath = $image->store('galleryKontrakan', 'public');
-        $galleryPath = $request->file('foto_banner')->store('galleryKontrakan', 'public');
-    }
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'harga' => 'required|numeric',
+            'uang_dp' => 'required|numeric',
+            'deskripsi' => 'required|string',
+            'tipe_properti' => 'required|string',
+            'kamar_tidur' => 'required|integer',
+            'kamar_mandi' => 'required|integer',
+            'ukuran_properti' => 'required|string',
+            'foto_kontrakan.*' => 'image|mimes:jpeg,jpg,png,gif,webp',
+            'foto_banner' => 'image|mimes:jpeg,png,jpg,gif',
+            'provinsi' => 'required|string',
+            'kota' => 'required|string',
+            'kecamatan' => 'required|string',
+            'kelurahan' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'fasilitas' => 'array',
+            'fasilitas.*' => 'exists:fasilitas,id',
+            'fasilitas_tambahan' => 'nullable|string',
+        ]);
+        // dd($request->all());
 
-    $kontrakan = new Kontrakan();
-    $kontrakan->user_id = auth()->user()->id;
-    $kontrakan->nama = $request->nama;
-    $kontrakan->alamat = $request->alamat;
-    $kontrakan->harga = $request->harga;
-    $kontrakan->deskripsi = $request->deskripsi;
-    $kontrakan->tipe_properti = $request->tipe_properti;
-    $kontrakan->ukuran_properti = $request->ukuran_properti;
-    $kontrakan->kamar_tidur = $request->kamar_tidur;
-    $kontrakan->kamar_mandi = $request->kamar_mandi;
-    $kontrakan->provinsi = $request->provinsi;
-    $kontrakan->kota = $request->kota;
-    $kontrakan->kecamatan = $request->kecamatan;
-    $kontrakan->kelurahan = $request->kelurahan;
-    $kontrakan->banner = $galleryPath;
-    $kontrakan->latitude = $request->latitude;
-    $kontrakan->longitude = $request->longitude;
-    $kontrakan->fasilitas_tambahan = $request->fasilitas_tambahan;
-    $kontrakan->status = 'pending';
-    $kontrakan->save();
-
-    if ($request->hasFile('foto_kontrakan')) {
-        foreach ($request->file('foto_kontrakan') as $image) {
-            $galleryPath = $image->store('galleryKontrakan', 'public');
-            $galleryKontrakan = new GaleryKontrakan();
-            $galleryKontrakan->kontrakan_id = $kontrakan->id;
-            $galleryKontrakan->foto_kontrakan = $galleryPath;
-            $galleryKontrakan->save();
-            // dd($galleryKontrakan);
+        if ($request->hasFile('foto_banner')) {
+            // $galleryPath = $image->store('galleryKontrakan', 'public');
+            $galleryPath = $request->file('foto_banner')->store('galleryKontrakan', 'public');
         }
+
+        $kontrakan = new Kontrakan();
+        $kontrakan->user_id = Auth::id();
+        $kontrakan->nama = $request->nama;
+        $kontrakan->alamat = $request->alamat;
+        $kontrakan->harga = $request->harga;
+        $kontrakan->dp_harga = $request->uang_dp;
+        $kontrakan->deskripsi = $request->deskripsi;
+        $kontrakan->tipe_properti = $request->tipe_properti;
+        $kontrakan->ukuran_properti = $request->ukuran_properti;
+        $kontrakan->kamar_tidur = $request->kamar_tidur;
+        $kontrakan->kamar_mandi = $request->kamar_mandi;
+        $kontrakan->provinsi = $request->provinsi;
+        $kontrakan->kota = $request->kota;
+        $kontrakan->kecamatan = $request->kecamatan;
+        $kontrakan->kelurahan = $request->kelurahan;
+        $kontrakan->banner = $galleryPath;
+        $kontrakan->latitude = $request->latitude;
+        $kontrakan->longitude = $request->longitude;
+        $kontrakan->fasilitas_tambahan = $request->fasilitas_tambahan;
+        $kontrakan->status = 'pending';
+        $kontrakan->save();
+
+        if ($request->hasFile('foto_kontrakan')) {
+            foreach ($request->file('foto_kontrakan') as $image) {
+                $galleryPath = $image->store('galleryKontrakan', 'public');
+                $galleryKontrakan = new GaleryKontrakan();
+                $galleryKontrakan->kontrakan_id = $kontrakan->id;
+                $galleryKontrakan->foto_kontrakan = $galleryPath;
+                $galleryKontrakan->save();
+                // dd($galleryKontrakan);
+            }
+        }
+
+
+        if ($request->has('fasilitas')) {
+            $kontrakan->fasilitasUmum()->sync($request->fasilitas);
+        }
+
+        $dataUser = User::findOrFail(Auth::id());
+        if ($dataUser->role == 'pencari') {
+            $dataUser->role = 'pemilik';
+            $dataUser->save();
+        }
+
+        // dd($request->all());
+        return redirect()->route('kontrakan.index')->with('success', 'Kontrakan created successfully.');
     }
 
 
-    if ($request->has('fasilitas')) {
-        $kontrakan->fasilitasUmum()->sync($request->fasilitas);
+    public function showNonForum($id)
+    {
+        $type = 'nonForum';
+        $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
+        // dd($detailKontrakan->user?->profile);
+        $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
+        $group = Auth::check() ? Auth::user()->groups->first() : null;
+        // dd($group);
+        // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
+        // return view('User.DetailKontrakan', compact('detailKontrakan', 'galleryKontrakan', 'type', 'group'));
+        return view('User.DetailKontrakanSementara', compact('detailKontrakan', 'galleryKontrakan', 'type', 'group'));
     }
 
-    $dataUser = User::findOrFail(Auth::id());
-    if ($dataUser->role == 'pencari') {
-        $dataUser->role = 'pemilik';
-        $dataUser->save();
+    public function showForum($id)
+    {
+        $type = 'forum';
+        $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
+        $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
+        $group = Auth::check() ? Auth::user()->groups->first() : null;
+        // dd($group);
+        // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
+        return view('User.DetailKontrakanSementara', compact('detailKontrakan', 'galleryKontrakan', 'type', 'group'));
     }
 
-    return redirect()->route('kontrakan.index')->with('success', 'Kontrakan created successfully.');
-}
+    public function bookingForum(Request $request, $id)
+    {
 
+        $request->validate([
+            'tanggal_checkin' => 'required|date',
+            'lama_mengontrak' => 'required|integer',
+        ]);
+        // dd($request->all());
+        // dd($request->all());
+        $checkBooking = Booking::where('user_id', Auth::id())->first();
+        $group = Auth::user()->groups->first()->id;
+        // dd($group);
+        if ($checkBooking) {
+            return redirect()->route('detail.kontrakanForum', $id)->withErrors(['user' => 'User already booked.']);
+        }
 
-public function showNonForum($id)
-{
-    $type = 'nonForum';
-    $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
-    $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
-    // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
-    return view('User.DetailKontrakan', compact('detailKontrakan', 'galleryKontrakan', 'type'));
-}
+        Booking::create([
+            'user_id' => Auth::id(),
+            'kontrakan_id' => $id,
+            'group_id' => $group,
+            'tanggal_checkin' => $request->tanggal_checkin,
+            'lama_mengontrak' => $request->lama_mengontrak,
+            'status' => 'pending',
+        ]);
 
-public function showForum($id)
-{
-    $type = 'forum';
-    $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
-    $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
-    // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
-    return view('User.DetailKontrakan', compact('detailKontrakan', 'galleryKontrakan', 'type'));
-}
+        return redirect()->route('forums.show', $group)->with('success', 'Booking request sent successfully.');
+    }
+
+    public function bookingNonForum(Request $request, $id)
+    {
+        $checkBooking = Booking::where('user_id', Auth::id())->first();
+        if ($checkBooking) {
+            return redirect()->route('detail.kontrakanForum', $id)->withErrors(['user' => 'User already booked.']);
+        }
+
+        Booking::create([
+            'user_id' => Auth::id(),
+            'kontrakan_id' => $id,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('detail.kontrakanNonForum', $id)->with('success', 'Booking request sent successfully.');
+    }
 
     public function edit($id)
     {
@@ -125,48 +183,49 @@ public function showForum($id)
         return view('Kontrakan.edit', compact('kontrakan', 'fasilitasUmum', 'fasilitas'));
     }
 
-    public function update(Request $request, $id){
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'alamat' => 'required|string|max:255',
-        'harga' => 'required|numeric',
-        'deskripsi' => 'nullable|string',
-        'tipe_properti' => 'required|string|in:kontrakan,apartemen',
-        'ukuran_properti' => 'required|string',
-        'kamar_tidur' => 'required|integer',
-        'kamar_mandi' => 'required|integer',
-        'foto_kontrakan.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        'provinsi' => 'required|string',
-        'kota' => 'required|string',
-        'kecamatan' => 'required|string',
-        'kelurahan' => 'required|string',
-        'latitude' => 'required|numeric',
-        'longitude' => 'required|numeric',
-        'fasilitas' => 'array',
-        'fasilitas.*' => 'exists:fasilitas,id',
-        'fasilitas_tambahan' => 'nullable|string',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string|max:255',
+            'harga' => 'required|numeric',
+            'deskripsi' => 'nullable|string',
+            'tipe_properti' => 'required|string|in:kontrakan,apartemen',
+            'ukuran_properti' => 'required|string',
+            'kamar_tidur' => 'required|integer',
+            'kamar_mandi' => 'required|integer',
+            'foto_kontrakan.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'provinsi' => 'required|string',
+            'kota' => 'required|string',
+            'kecamatan' => 'required|string',
+            'kelurahan' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'fasilitas' => 'array',
+            'fasilitas.*' => 'exists:fasilitas,id',
+            'fasilitas_tambahan' => 'nullable|string',
+        ]);
 
-    $kontrakan = Kontrakan::findOrFail($id);
-    $kontrakan->nama = $request->nama;
-    $kontrakan->alamat = $request->alamat;
-    $kontrakan->harga = $request->harga;
-    $kontrakan->deskripsi = $request->deskripsi;
-    $kontrakan->tipe_properti = $request->tipe_properti;
-    $kontrakan->ukuran_properti = $request->ukuran_properti;
-    $kontrakan->kamar_tidur = $request->kamar_tidur;
-    $kontrakan->kamar_mandi = $request->kamar_mandi;
-    $kontrakan->provinsi = $request->provinsi;
-    $kontrakan->kota = $request->kota;
-    $kontrakan->kecamatan = $request->kecamatan;
-    $kontrakan->kelurahan = $request->kelurahan;
-    $kontrakan->latitude = $request->latitude;
-    $kontrakan->longitude = $request->longitude;
-    $kontrakan->fasilitas_tambahan = $request->fasilitas_tambahan;
+        $kontrakan = Kontrakan::findOrFail($id);
+        $kontrakan->nama = $request->nama;
+        $kontrakan->alamat = $request->alamat;
+        $kontrakan->harga = $request->harga;
+        $kontrakan->deskripsi = $request->deskripsi;
+        $kontrakan->tipe_properti = $request->tipe_properti;
+        $kontrakan->ukuran_properti = $request->ukuran_properti;
+        $kontrakan->kamar_tidur = $request->kamar_tidur;
+        $kontrakan->kamar_mandi = $request->kamar_mandi;
+        $kontrakan->provinsi = $request->provinsi;
+        $kontrakan->kota = $request->kota;
+        $kontrakan->kecamatan = $request->kecamatan;
+        $kontrakan->kelurahan = $request->kelurahan;
+        $kontrakan->latitude = $request->latitude;
+        $kontrakan->longitude = $request->longitude;
+        $kontrakan->fasilitas_tambahan = $request->fasilitas_tambahan;
 
-    $kontrakan->save();
+        $kontrakan->save();
 
-    return redirect()->route('kontrakan.index')->with('success', 'Kontrakan updated successfully.');
+        return redirect()->route('kontrakan.index')->with('success', 'Kontrakan updated successfully.');
     }
 
     public function destroy($id)
@@ -212,5 +271,41 @@ public function showForum($id)
         }
 
         return view('Kontrakan.index', compact('kontrakan'));
+    }
+
+    public function filterKontrakan(Request $request)
+    {
+        $query = Kontrakan::query();
+
+        if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('provinsi', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kota', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('alamat', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        if ($request->filled('kamar_tidur')) {
+            if ($request->kamar_tidur === '4+') {
+                $query->where('kamar_tidur', '>=', 4);
+            } else {
+                $query->where('kamar_tidur', $request->kamar_tidur);
+            }
+        }
+
+        if ($request->filled('kamar_mandi')) {
+            if ($request->kamar_mandi === '3+') {
+                $query->where('kamar_mandi', '>=', 3);
+            } else {
+                $query->where('kamar_mandi', $request->kamar_mandi);
+            }
+        }
+
+        $result = $query->get();
+
+        return response()->json($result);
     }
 }

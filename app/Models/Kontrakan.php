@@ -55,4 +55,9 @@ class Kontrakan extends Model
     {
         return $this->belongsToMany(FasilitasUmum::class, 'fasilitas_umum', 'kontrakan_id', 'fasilitas_id');
     }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'kontrakan_id');
+    }
 }

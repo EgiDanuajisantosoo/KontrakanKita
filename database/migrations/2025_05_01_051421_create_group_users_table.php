@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('group_users', function (Blueprint $table) {
             $table->id();
             $table->string('role')->default('anggota');
+            $table->enum('status', ['pending', 'diterima', 'ditolak','keluar'])->default('pending');
             $table->foreignId('group_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

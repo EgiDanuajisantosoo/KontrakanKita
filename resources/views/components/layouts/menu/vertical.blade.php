@@ -11,8 +11,11 @@
     <li class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
       <a class="menu-link" href="{{ route('dashboard') }}" wire:navigate>{{ __('Dashboard') }}</a>
     </li>
-    <li class="menu-item {{ request()->is('kontrakan') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('dashboard') }}" wire:navigate>{{ __('Pengajuan Kontrakan') }}</a>
+    <li class="menu-item {{ request()->is('pengajuan') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('pengajuan') }}" wire:navigate>{{ __('Pengajuan Kontrakan') }}</a>
+    </li>
+    <li class="menu-item {{ request()->is('admin.transaksi') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('admin.transaksi') }}" wire:navigate>{{ __('Transaksi Dp Kontrakan') }}</a>
     </li>
 
     <!-- Settings -->

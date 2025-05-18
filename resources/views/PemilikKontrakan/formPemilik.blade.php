@@ -13,7 +13,7 @@
             <form action="{{ route('kontrakan.store') }}" class="p-12" method="post" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 <div>
-                    <label for="nama" class="block text-sm font-medium text-gray-700">Nama Pemilik Kontrakan</label>
+                    <label for="nama" class="block text-sm font-medium text-gray-700">Nama Kontrakan</label>
                     <input type="text" name="nama" id="nama" placeholder="Nama Pemilik Kontrakan"
                         class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2">
                 </div>
@@ -25,6 +25,11 @@
                 <div>
                     <label for="harga" class="block text-sm font-medium text-gray-700">Harga Kontrakan</label>
                     <input type="text" name="harga" id="harga" placeholder="Harga Kontrakan"
+                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2">
+                </div>
+                <div>
+                    <label for="uang_dp" class="block text-sm font-medium text-gray-700">Uang Dp Kontrakan</label>
+                    <input type="text" name="uang_dp" id="uang_dp" placeholder="Uang DP Kontrakan"
                     class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-red text-xs py-2 mb-2 mt-2">
                 </div>
                 <div>
@@ -136,12 +141,8 @@
 
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition((position) => {
-                            const {
-                                latitude,
-                                longitude
-                            } = position.coords;
-                            console.log("User location:", latitude, longitude);
-                            map.setView([latitude, longitude], 16); // Zoom lebih dekat
+                            const { latitude, longitude } = position.coords;
+                            map.setView([latitude, longitude], 16); // Set view ke lokasi user
                             marker.setLatLng([latitude, longitude]);
                             document.getElementById('latitude').value = latitude;
                             document.getElementById('longitude').value = longitude;
@@ -158,16 +159,15 @@
                         const latLng = marker.getLatLng();
                         document.getElementById('latitude').value = latLng.lat;
                         document.getElementById('longitude').value = latLng.lng;
+                        map.setView([latLng.lat, latLng.lng], map.getZoom()); // Update view ke marker baru
                     });
 
                     map.on('click', function(e) {
-                        const {
-                            lat,
-                            lng
-                        } = e.latlng;
+                        const { lat, lng } = e.latlng;
                         marker.setLatLng([lat, lng]);
                         document.getElementById('latitude').value = lat;
                         document.getElementById('longitude').value = lng;
+                        map.setView([lat, lng], map.getZoom()); // Update view ke lokasi klik
                     });
                 });
             </script>

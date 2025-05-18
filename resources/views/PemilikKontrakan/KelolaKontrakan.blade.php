@@ -4,78 +4,90 @@
         <div class="content">
             <div class="headerContent bg-[#003A9D] min-h-auto text-center md:flex md:justify-between md:relative ">
                 <h1 class="text-white p-8 text-3xl font-bold ">Ayo Kelola Kontrakanmu!</h1>
-                <button onclick="showInsertPopup()"
-                    class="text-xs md:text-base mb-5 md:mb-0 md:absolute md:bottom-5 md:right-7 bg-white p-1 rounded-sm hover:bg-gray-200">
+                {{-- <button onclick="showInsertPopup()"
+                    class="text-sm md:text-base font-semibold mb-5 md:mb-0 md:absolute md:bottom-5 md:right-7
+           bg-white text-blue-600 px-4 py-2 rounded-lg shadow-md hover:text-white hover:bg-blue-700
+           transition duration-300 ease-in-out cursor-pointer">
                     Tambah Kontrakan
-                </button>
+                </button> --}}
+                <a href="/formPemilik"
+                    class="text-sm md:text-base font-semibold mb-5 md:mb-0 md:absolute md:bottom-5 md:right-7
+           bg-white text-blue-600 px-4 py-2 rounded-lg shadow-md hover:text-white hover:bg-blue-700
+           transition duration-300 ease-in-out cursor-pointer">
+                    Tambah Kontrakan
+            </a>
+
             </div>
             <div class="container mx-auto p-5">
                 <div class="cardColumn ">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         <!-- Rumah Mewah -->
                         @if ($kontrakan->count() == 0)
-                        <div class="bg-white rounded-lg shadow relative pb-10 flex items-center justify-center h-40">
-                            <h1 class="text-center text-gray-500 font-bold">Tidak ada data kontrakan</h1>
-                        </div>
+                            <div class="bg-white rounded-lg shadow relative pb-10 flex items-center justify-center h-40">
+                                <h1 class="text-center text-gray-500 font-bold">Tidak ada data kontrakan</h1>
+                            </div>
                         @endif
                         @foreach ($kontrakan as $data)
-                        <div class="bg-white rounded-lg shadow relative pb-10">
-                            <a href="DetailKontrakan">
-                                <img src="{{ asset('storage/' . $data->banner) }}" class="w-full rounded-t-lg"
-                                    alt="">
-                                <div class="text p-3 md:p-5">
-                                    <div class="flex justify-between">
-                                        <h3 class="text-lg font-bold">{{ $data->nama }}</h3>
-                                        <div class="flex mt-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M7 15h2c0 1.08 1.37 2 3 2s3-.92 3-2c0-1.1-1.04-1.5-3.24-2.03C9.64 12.44 7 11.78 7 9c0-1.79 1.47-3.31 3.5-3.82V3h3v2.18C15.53 5.69 17 7.21 17 9h-2c0-1.08-1.37-2-3-2s-3 .92-3 2c0 1.1 1.04 1.5 3.24 2.03C14.36 11.56 17 12.22 17 15c0 1.79-1.47 3.31-3.5 3.82V21h-3v-2.18C8.47 18.31 7 16.79 7 15" />
-                                            </svg>
-                                            <p class="text-sm font-light">Hubungi Pemilik</p>
+                            <div class="bg-white rounded-lg shadow relative pb-10">
+                                <a href="DetailKontrakan">
+                                    <img src="{{ asset('storage/' . $data->banner) }}" class="w-full rounded-t-lg"
+                                        alt="">
+                                    <div class="text p-3 md:p-5">
+                                        <div class="flex justify-between">
+                                            <h3 class="text-lg font-bold">{{ $data->nama }}</h3>
+                                            <div class="flex mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill="currentColor"
+                                                        d="M7 15h2c0 1.08 1.37 2 3 2s3-.92 3-2c0-1.1-1.04-1.5-3.24-2.03C9.64 12.44 7 11.78 7 9c0-1.79 1.47-3.31 3.5-3.82V3h3v2.18C15.53 5.69 17 7.21 17 9h-2c0-1.08-1.37-2-3-2s-3 .92-3 2c0 1.1 1.04 1.5 3.24 2.03C14.36 11.56 17 12.22 17 15c0 1.79-1.47 3.31-3.5 3.82V21h-3v-2.18C8.47 18.31 7 16.79 7 15" />
+                                                </svg>
+                                                <p class="text-sm font-light">Hubungi Pemilik</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-gray-600 font-normal text-sm">
+                                            {{ $data->kota }},{{ $data->provinsi }}</p>
+                                        <div class="flex gap-3 mt-3">
+                                            <div class="flex gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill="currentColor"
+                                                        d="M7 14c1.66 0 3-1.34 3-3S8.66 8 7 8s-3 1.34-3 3s1.34 3 3 3m0-4c.55 0 1 .45 1 1s-.45 1-1 1s-1-.45-1-1s.45-1 1-1m12-3h-8v8H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4m2 8h-8V9h6c1.1 0 2 .9 2 2Z" />
+                                                </svg>
+                                                <p class="text-[10px] md:text-xs">{{ $data->kamar_tidur }} kamar tidur
+                                                </p>
+                                            </div>
+                                            <div class="flex gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24">
+                                                    <g fill="none" stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="1.5">
+                                                        <path
+                                                            d="M21 13v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-2.4a.6.6 0 0 1 .6-.6zm-5 7l1 2m-9-2l-1 2m14-9V7a4 4 0 0 0-4-4h-5" />
+                                                        <path
+                                                            d="M15.4 8H8.6c-.331 0-.596-.268-.56-.598C8.186 6.075 8.863 3 12 3s3.814 3.075 3.96 4.402c.036.33-.229.598-.56.598" />
+                                                    </g>
+                                                </svg>
+                                                <p class="text-[10px] md:text-xs">{{ $data->kamar_mandi }} kamar mandi
+                                                </p>
+                                            </div>
+                                            <div class="flex gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill="currentColor"
+                                                        d="M12 3a2 2 0 1 0 0 4a2 2 0 0 0 0-4m-2 9a2 2 0 1 1 4 0a2 2 0 0 1-4 0m0 7a2 2 0 1 1 4 0a2 2 0 0 1-4 0" />
+                                                </svg>
+                                                <p class="text-[10px] md:text-xs">lainnya</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <p class="text-gray-600 font-normal text-sm">{{ $data->kota }},{{ $data->provinsi }}</p>
-                                    <div class="flex gap-3 mt-3">
-                                        <div class="flex gap-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M7 14c1.66 0 3-1.34 3-3S8.66 8 7 8s-3 1.34-3 3s1.34 3 3 3m0-4c.55 0 1 .45 1 1s-.45 1-1 1s-1-.45-1-1s.45-1 1-1m12-3h-8v8H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4m2 8h-8V9h6c1.1 0 2 .9 2 2Z" />
-                                            </svg>
-                                            <p class="text-[10px] md:text-xs">{{ $data->kamar_tidur }} kamar tidur</p>
-                                        </div>
-                                        <div class="flex gap-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                viewBox="0 0 24 24">
-                                                <g fill="none" stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="1.5">
-                                                    <path
-                                                        d="M21 13v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-2.4a.6.6 0 0 1 .6-.6zm-5 7l1 2m-9-2l-1 2m14-9V7a4 4 0 0 0-4-4h-5" />
-                                                    <path
-                                                        d="M15.4 8H8.6c-.331 0-.596-.268-.56-.598C8.186 6.075 8.863 3 12 3s3.814 3.075 3.96 4.402c.036.33-.229.598-.56.598" />
-                                                </g>
-                                            </svg>
-                                            <p class="text-[10px] md:text-xs">{{ $data->kamar_mandi }} kamar mandi</p>
-                                        </div>
-                                        <div class="flex gap-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M12 3a2 2 0 1 0 0 4a2 2 0 0 0 0-4m-2 9a2 2 0 1 1 4 0a2 2 0 0 1-4 0m0 7a2 2 0 1 1 4 0a2 2 0 0 1-4 0" />
-                                            </svg>
-                                            <p class="text-[10px] md:text-xs">lainnya</p>
-                                        </div>
-                                    </div>
+                                </a>
+                                <div class="flex justify-end gap-4 p-3 absolute bottom-0 right-0">
+                                    <button onclick="showDeletePopup()"
+                                        class="bg-red-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-red-700">Hapus</button>
+                                    <button onclick="showEditModal()"
+                                        class="bg-green-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-green-700">Edit</button>
                                 </div>
-                            </a>
-                            <div class="flex justify-end gap-4 p-3 absolute bottom-0 right-0">
-                                <button onclick="showDeletePopup()"
-                                    class="bg-red-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-red-700">Hapus</button>
-                                <button onclick="showEditModal()"
-                                    class="bg-green-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-green-700">Edit</button>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -97,189 +109,435 @@
         </div>
 
         <!-- Modal Edit Kontrakan -->
-        <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-black/50 z-20 hidden p-4">
-            <div class="bg-white rounded-lg shadow-lg w-full max-w-lg flex flex-col max-h-[90vh] overflow-auto">
+        <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-2xl relative overflow-y-auto max-h-[90vh]">
                 <!-- Header Modal -->
-                <div
-                    class="bg-[#003A9D] text-white p-4 rounded-t-lg text-lg font-bold text-center sticky bottom-0 z-10">
-                    <h1>Edit Kontrakan</h1>
-                </div>
+                <button onclick="closeEditModal()"
+                    class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl transition duration-200 cursor-pointer">&times;</button>
+                <h2 class="text-center text-3xl font-bold text-gray-800 mb-6">Edit Kontrakan</h2>
+                <hr class="mb-6 border-t border-gray-200">
+
 
                 <!-- Body Modal -->
-                <div class="p-7 flex-1 overflow-auto">
-                    <label class="block text-sm font-semibold">Nama</label>
-                    <input type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="Nama kontrakan">
-
-                    <label class="block text-sm font-semibold">Harga</label>
-                    <input type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="Harga">
-
-                    <label class="block text-sm font-semibold">Fasilitas</label>
-                    <input type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="Fasilitas">
-
-                    <label class="block text-sm font-semibold">Alamat</label>
-                    <input type="text" class="w-full p-2 border rounded-lg mb-3" placeholder="Alamat">
-
-                    <label class="block text-sm font-semibold">Deskripsi</label>
-                    <textarea class="w-full p-2 border rounded-lg mb-3 min-h-[120px] h-40" placeholder="Deskripsi"></textarea>
-
-                    <label class="block text-sm font-semibold">Gambar</label>
-                    <input type="file" class="w-auto p-2 border rounded-lg mb-3">
-                </div>
-
-                <!-- Footer Modal -->
-                <div class="bg-[#003A9D] p-4 flex justify-end gap-3 rounded-b-lg">
-                    <button onclick="closeEditModal()"
-                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Batal</button>
-                    <button onclick="saveEdit()"
-                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Edit</button>
-                </div>
-            </div>
-        </div>
-
-        {{-- Modal Insert Kontrakan --}}
-        <div id="insertModal" class="fixed inset-0 flex items-center justify-center bg-black/50 z-20 hidden p-4">
-            <div class="bg-white rounded-lg shadow-lg w-full max-w-lg flex flex-col max-h-[90vh] overflow-auto">
-                <!-- Header Modal -->
-                <div
-                    class="bg-[#003A9D] text-white p-4 rounded-t-lg text-lg font-bold text-center sticky bottom-0 z-10">
-                    <h1>Edit Kontrakan</h1>
-                </div>
-
-                <!-- Body Modal -->
-                <div class="p-7 flex-1 overflow-auto">
-                    <form action="{{ route('kontrakan.store') }}" method="post" enctype="multipart/form-data">
+                <div class="p-6 space-y-6">
+                    <form action="{{ route('kontrakan.store') }}" method="post" enctype="multipart/form-data"
+                        class="space-y-6">
                         @csrf
-                        <input type="text" name="nama" placeholder="Nama Pemilik Kontrakan" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        <input type="text" name="alamat" placeholder="Alamat Pemilik Kontrakan" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        <input type="text" name="harga" placeholder="Harga Kontrakan" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        <textarea name="deskripsi" id="" cols="30" rows="10"></textarea>
-                        <input type="text" name="tipe_properti" placeholder="Tipe Properti" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        <input type="text" name="kamar_tidur" placeholder="Kamar" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        <input type="text" name="kamar_mandi" placeholder="Kamar Mandi" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        <input type="text" name="ukuran_properti" placeholder="Ukuran Properti" class="border border-gray-300 rounded-md p-2 mb-4 w-full">
-                        {{-- <input type="text" name="faslitas_tambahan" placeholder="Fasilitas Tambahan" class="border border-gray-300 rounded-md p-2 mb-4 w-full"> --}}
-                        <input type="file" name="foto_kontrakan[]" placeholder="Foto Kontrakan" class="border border-gray-300 rounded-md p-2 mb-4 w-full" multiple>
-                        <div class="col-span-2">
-                            <label class="block text-gray-700 font-semibold mb-2">Alamat</label>
-                            <div class="md:flex md:row md:space-x-4 w-full text-xs">
-                                <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Provinsi:<abbr title="required">*</abbr></label>
-                                    <select
-                                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
-                                        name="provinsi" id="provinsi" required>
-                                        <option value="">Pilih</option>
-                                    </select>
-                                    @error('provinsi')
-                                        <p class="text-red text-xs">{{ $message }}</p>
-                                    @enderror
+
+                        <!-- Informasi Pemilik -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800">Informasi Pemilik</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Pemilik</label>
+                                    <input type="text" name="nama" class="w-full border rounded-lg p-2"
+                                        placeholder="Nama Pemilik">
                                 </div>
-                                <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kabupaten/Kota:<abbr
-                                            title="required">*</abbr></label>
-                                    <select
-                                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
-                                        name="kota" id="kota" required>
-                                        <option value="">Pilih</option>
-                                    </select>
-                                    @error('kota')
-                                        <p class="text-red text-xs">{{ $message }}</p>
-                                    @enderror
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Pemilik</label>
+                                    <input type="text" name="alamat" class="w-full border rounded-lg p-2"
+                                        placeholder="Alamat Pemilik">
                                 </div>
                             </div>
-                            <div class="md:flex md:row md:space-x-4 w-full text-xs">
-                                <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kecamatan:<abbr title="required">*</abbr></label>
-                                    <select
-                                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
-                                        name="kecamatan" id="kecamatan" required>
-                                        <option value="">Pilih</option>
-                                    </select>
-                                    @error('kecamatan')
-                                        <p class="text-red text-xs">{{ $message }}</p>
-                                    @enderror
+                        </div>
+
+                        <!-- Informasi Kontrakan -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800">Detail Kontrakan</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Harga</label>
+                                    <input type="text" name="harga" class="w-full border rounded-lg p-2"
+                                        placeholder="Harga Kontrakan">
                                 </div>
-                                <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kelurahan/Desa<abbr
-                                            title="required">*</abbr></label>
-                                    <select
-                                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4"
-                                        name="kelurahan" id="kelurahan" required>
-                                        <option value="">Pilih</option>
-                                    </select>
-                                    @error('kelurahan')
-                                        <p class="text-red text-xs">{{ $message }}</p>
-                                    @enderror
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Harga DP</label>
+                                    <input type="text" name="uang_dp" class="w-full border rounded-lg p-2"
+                                        placeholder="Harga DP Kontrakan">
                                 </div>
-                                {{-- <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Kode Pos<abbr title="required">*</abbr></label>
-                                    <input type="text" name="kode_pos" id="kode_pos"
-                                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4">
-                                    @error('kode_pos')
-                                        <p class="text-red text-xs">{{ $message }}</p>
-                                    @enderror
+                                <div class="">
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Ukuran
+                                        Properti</label>
+                                    <input type="text" name="ukuran_properti" class="w-full border rounded-lg p-2"
+                                        placeholder="Contoh: 6x8 m²">
+                                </div>
+                                <div class="">
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Tipe Properti</label>
+                                    <input type="text" name="tipe_properti" class="w-full border rounded-lg p-2"
+                                        placeholder="Contoh: Kontrakan">
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2 mt-4">
+                                <label class="block text-sm font-medium text-gray-700  mb-2">Deskripsi</label>
+                                <textarea name="deskripsi" rows="4" class="w-full border rounded-lg p-2"
+                                    placeholder="Tuliskan deskripsi kontrakan..."></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Fasilitas -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800">Fasilitas</h2>
+                            <div class="space-y-2">
+                                {{-- <div>
+                                    <label class="block text-sm font-medium text-gray-700">Fasilitas Umum</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        @foreach ($fasilitas as $item)
+                                            <label class="flex items-center space-x-2">
+                                                <input type="checkbox" name="fasilitas[]"
+                                                    value="{{ $item->id }}">
+                                                <span>{{ $item->nama_fasilitas }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div> --}}
-                                <div class="w-full flex flex-col mb-3">
-                                    <label class="font-semibold text-gray-600 py-2">Lokasi pada Peta<abbr title="required">*</abbr></label>
-                                    <div id="map" style="height: 300px; width: 100%;"></div>
-                                    <input type="input" name="latitude" id="latitude">
-                                    <input type="input" name="longitude" id="longitude">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700  mb-2">Kamar
+                                            Tidur</label>
+                                        <input type="text" name="kamar_tidur" class="w-full border rounded-lg p-2"
+                                            placeholder="Jumlah Kamar">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700  mb-2">Kamar
+                                            Mandi</label>
+                                        <input type="text" name="kamar_mandi" class="w-full border rounded-lg p-2"
+                                            placeholder="Jumlah Kamar Mandi">
+                                    </div>
                                 </div>
-                                <label for="Fasilitas Umum">Fasilitas Umum :</label><br>
-                                @foreach ($fasilitas as $item)
-                                    <input type="checkbox" name="fasilitas[]" value="{{ $item->id }}" class="border border-gray-300 rounded-md p-2 mb-4 w-full"> {{ $item->nama_fasilitas }}<br>
-                                @endforeach
 
-                                <label for="Fasilitas Tambahan">Fasilitas Tambahan :</label><br>
-                                <textarea name="fasilitas_tambahan" id="" cols="40" rows="5"></textarea>
-
-                                <button type="submit" name="submit">Kirim</button>
-
-
-
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", () => {
-                                        const map = L.map('map').setView([-6.200000, 106.816666], 13); // Default to Jakarta
-
-                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                            maxZoom: 19,
-                                        }).addTo(map);
-
-                                        const marker = L.marker([-6.200000, 106.816666], { draggable: true }).addTo(map);
-
-                                        marker.on('dragend', function(e) {
-                                            const latLng = marker.getLatLng();
-                                            document.getElementById('latitude').value = latLng.lat;
-                                            document.getElementById('longitude').value = latLng.lng;
-                                        });
-
-                                        map.on('click', function(e) {
-                                            const { lat, lng } = e.latlng;
-                                            marker.setLatLng([lat, lng]);
-                                            document.getElementById('latitude').value = lat;
-                                            document.getElementById('longitude').value = lng;
-                                        });
-                                    });
-                                </script>
-                                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-                                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Fasilitas
+                                        Tambahan</label>
+                                    <textarea name="fasilitas_tambahan" rows="3" class="w-full border rounded-lg p-2"
+                                        placeholder="Contoh: Listrik prabayar, taman, dapur..."></textarea>
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Upload Gambar -->
+                            <div>
+                                <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700  mb-2">Foto
+                                    Banner</label>
+                                <input type="file" name="foto_banner" id="foto_kontrakan"
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                            </div>
+                            <div>
+                                <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700  mb-2">Foto
+                                    Kontrakan</label>
+                                <input type="file" name="foto_kontrakan[]" id="foto_kontrakan" multiple
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                            </div>
+                        </div>
+
+                        <!-- Lokasi & Alamat -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800  mb-2">Lokasi</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Provinsi</label>
+                                    <select name="provinsi" id="provinsi" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Provinsi</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kabupaten/Kota</label>
+                                    <select name="kota" id="kota" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Kota</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kecamatan</label>
+                                    <select name="kecamatan" id="kecamatan" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Kecamatan</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kelurahan</label>
+                                    <select name="kelurahan" id="kelurahan" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Kelurahan</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Lokasi pada
+                                        Peta</label>
+                                    <div id="editMap" class="w-full h-64 mt-2 rounded-lg border"></div>
+                                    <input type="hidden" name="latitude" id="editLatitude">
+                                    <input type="hidden" name="longitude" id="editLongitude">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Kirim -->
+                        <div class="text-right">
+
+                            <button type="submit" id="saveEdit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">Ubah</button>
+
                         </div>
                     </form>
                 </div>
+            </div>
 
-                <!-- Footer Modal -->
-                <div class="bg-[#003A9D] p-4 flex justify-end gap-3 rounded-b-lg">
-                    <button onclick="closeInsertModal()"
-                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Batal</button>
-                    <button onclick="insert()"
-                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Tambah</button>
+            <!-- Leaflet Map Script -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    // Edit Modal Map
+                    if (document.getElementById('editMap')) {
+                        const editMap = L.map('editMap').setView([-6.200000, 106.816666], 13);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                        }).addTo(editMap);
+
+                        const editMarker = L.marker([-6.200000, 106.816666], {
+                            draggable: true
+                        }).addTo(editMap);
+
+                        editMarker.on('dragend', function() {
+                            const latLng = editMarker.getLatLng();
+                            document.getElementById('editLatitude').value = latLng.lat;
+                            document.getElementById('editLongitude').value = latLng.lng;
+                        });
+
+                        editMap.on('click', function(e) {
+                            const {
+                                lat,
+                                lng
+                            } = e.latlng;
+                            editMarker.setLatLng([lat, lng]);
+                            document.getElementById('editLatitude').value = lat;
+                            document.getElementById('editLongitude').value = lng;
+                        });
+                    }
+                });
+            </script>
+        </div>
+
+        {{-- Modal Insert Kontrakan --}}
+        <div id="insertModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-2xl relative overflow-y-auto max-h-[90vh]">
+                <!-- Header Modal -->
+                <button onclick="closeInsertModal()"
+                    class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl transition duration-200 cursor-pointer">&times;</button>
+                <h2 class="text-center text-3xl font-bold text-gray-800 mb-6">Tambah Kontrakan</h2>
+                <hr class="mb-6 border-t border-gray-200">
+
+
+                <!-- Body Modal -->
+                <div class="p-6 space-y-6">
+                    <form action="{{ route('kontrakan.store') }}" method="post" enctype="multipart/form-data"
+                        class="space-y-6">
+                        @csrf
+
+                        <!-- Informasi Pemilik -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800">Informasi Pemilik</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Pemilik</label>
+                                    <input type="text" name="nama" class="w-full border rounded-lg p-2"
+                                        placeholder="Nama Pemilik">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 m">Alamat Pemilik</label>
+                                    <input type="text" name="alamat" class="w-full border rounded-lg p-2"
+                                        placeholder="Alamat Pemilik">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Kontrakan -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800">Detail Kontrakan</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Harga</label>
+                                    <input type="text" name="harga" class="w-full border rounded-lg p-2"
+                                        placeholder="Harga Kontrakan">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Harga DP</label>
+                                    <input type="text" name="uang_dp" class="w-full border rounded-lg p-2"
+                                        placeholder="Harga DP Kontrakan">
+                                </div>
+                                <div class="">
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Ukuran
+                                        Properti</label>
+                                    <input type="text" name="ukuran_properti" class="w-full border rounded-lg p-2"
+                                        placeholder="Contoh: 6x8 m²">
+                                </div>
+                                <div class="">
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Tipe Properti</label>
+                                    <input type="text" name="tipe_properti" class="w-full border rounded-lg p-2"
+                                        placeholder="Contoh: Kontrakan">
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2 mt-4">
+                                <label class="block text-sm font-medium text-gray-700  mb-2">Deskripsi</label>
+                                <textarea name="deskripsi" rows="4" class="w-full border rounded-lg p-2"
+                                    placeholder="Tuliskan deskripsi kontrakan..."></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Fasilitas -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800">Fasilitas</h2>
+                            <div class="space-y-2">
+                                {{-- <div>
+                                    <label class="block text-sm font-medium text-gray-700">Fasilitas Umum</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        @foreach ($fasilitas as $item)
+                                            <label class="flex items-center space-x-2">
+                                                <input type="checkbox" name="fasilitas[]"
+                                                    value="{{ $item->id }}">
+                                                <span>{{ $item->nama_fasilitas }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div> --}}
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700  mb-2">Kamar
+                                            Tidur</label>
+                                        <input type="text" name="kamar_tidur" class="w-full border rounded-lg p-2"
+                                            placeholder="Jumlah Kamar">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700  mb-2">Kamar
+                                            Mandi</label>
+                                        <input type="text" name="kamar_mandi" class="w-full border rounded-lg p-2"
+                                            placeholder="Jumlah Kamar Mandi">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Fasilitas
+                                        Tambahan</label>
+                                    <textarea name="fasilitas_tambahan" rows="3" class="w-full border rounded-lg p-2"
+                                        placeholder="Contoh: Listrik prabayar, taman, dapur..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Upload Gambar -->
+                            <div>
+                                <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700  mb-2">Foto
+                                    Banner</label>
+                                <input type="file" name="foto_banner" id="foto_kontrakan"
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                            </div>
+                            <div>
+                                <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700  mb-2">Foto
+                                    Kontrakan</label>
+                                <input type="file" name="foto_kontrakan[]" id="foto_kontrakan" multiple
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                            </div>
+                        </div>
+
+                        <!-- Lokasi & Alamat -->
+                        <div>
+                            <h2 class="text-lg font-bold mb-4 text-gray-800  mb-2">Lokasi</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Provinsi</label>
+                                    <select name="provinsi" id="provinsi" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Provinsi</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kabupaten/Kota</label>
+                                    <select name="kota" id="kota" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Kota</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kecamatan</label>
+                                    <select name="kecamatan" id="kecamatan" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Kecamatan</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kelurahan</label>
+                                    <select name="kelurahan" id="kelurahan" required
+                                        class="w-full border rounded-lg p-2">
+                                        <option value="">Pilih Kelurahan</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700  mb-2">Lokasi pada
+                                        Peta</label>
+                                    <div id="map" class="w-full h-64 mt-2 rounded-lg border"></div>
+                                    <input type="hidden" name="latitude" id="latitude">
+                                    <input type="hidden" name="longitude" id="longitude">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Kirim -->
+                        <div class="text-right">
+
+                            <button type="submit" id="insert"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">Tambah</button>
+
+                        </div>
+                    </form>
                 </div>
             </div>
+
+            <!-- Leaflet Map Script -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const map = L.map('map').setView([-6.200000, 106.816666], 12);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                    }).addTo(map);
+
+                    const marker = L.marker([-6.200000, 106.816666], {
+                        draggable: true
+                    }).addTo(map);
+
+                    marker.on('dragend', function() {
+                        const latLng = marker.getLatLng();
+                        document.getElementById('latitude').value = latLng.lat;
+                        document.getElementById('longitude').value = latLng.lng;
+                    });
+
+                    map.on('click', function(e) {
+                        const {
+                            lat,
+                            lng
+                        } = e.latlng;
+                        marker.setLatLng([lat, lng]);
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+                    });
+                });
+            </script>
         </div>
 
 
 
 
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
             function showDeletePopup() {
                 document.getElementById("deletePopup").classList.remove("hidden");
@@ -310,7 +568,69 @@
 
             function showInsertPopup() {
                 document.getElementById("insertModal").classList.remove("hidden");
+
+                // Reset dan load provinsi
+                axios.get('/api/provinces')
+                    .then(response => {
+                        let options = '<option value="">Pilih Provinsi</option>';
+                        response.data.forEach(item => {
+                            options += `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                        });
+                        document.getElementById('provinsi').innerHTML = options;
+                        document.getElementById('kota').innerHTML = '<option value="">Pilih Kota</option>';
+                        document.getElementById('kecamatan').innerHTML = '<option value="">Pilih Kecamatan</option>';
+                        document.getElementById('kelurahan').innerHTML = '<option value="">Pilih Kelurahan</option>';
+                    });
+
+                // Provinsi → Kota
+                document.getElementById('provinsi').addEventListener('change', function() {
+                    const id = this.options[this.selectedIndex].getAttribute('data-id');
+                    axios.get(`/api/regencies/${id}`)
+                        .then(response => {
+                            let options = '<option value="">Pilih Kota</option>';
+                            response.data.forEach(item => {
+                                options +=
+                                    `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                            });
+                            document.getElementById('kota').innerHTML = options;
+                            document.getElementById('kecamatan').innerHTML =
+                                '<option value="">Pilih Kecamatan</option>';
+                            document.getElementById('kelurahan').innerHTML =
+                                '<option value="">Pilih Kelurahan</option>';
+                        });
+                });
+
+                // Kota → Kecamatan
+                document.getElementById('kota').addEventListener('change', function() {
+                    const id = this.options[this.selectedIndex].getAttribute('data-id');
+                    axios.get(`/api/districts/${id}`)
+                        .then(response => {
+                            let options = '<option value="">Pilih Kecamatan</option>';
+                            response.data.forEach(item => {
+                                options +=
+                                    `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                            });
+                            document.getElementById('kecamatan').innerHTML = options;
+                            document.getElementById('kelurahan').innerHTML =
+                                '<option value="">Pilih Kelurahan</option>';
+                        });
+                });
+
+                // Kecamatan → Kelurahan
+                document.getElementById('kecamatan').addEventListener('change', function() {
+                    const id = this.options[this.selectedIndex].getAttribute('data-id');
+                    axios.get(`/api/villages/${id}`)
+                        .then(response => {
+                            let options = '<option value="">Pilih Kelurahan</option>';
+                            response.data.forEach(item => {
+                                options += `<option value="${item.name}">${item.name}</option>`;
+                            });
+                            document.getElementById('kelurahan').innerHTML = options;
+                        });
+                });
             }
+
+
 
             function closeInsertModal() {
                 document.getElementById("insertModal").classList.add("hidden");

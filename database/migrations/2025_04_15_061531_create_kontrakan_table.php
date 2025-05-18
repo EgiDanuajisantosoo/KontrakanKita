@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->text('alamat');
             $table->integer('harga');
+            $table->integer('dp_harga')->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('tipe_properti');
             $table->integer('kamar_tidur');

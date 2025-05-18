@@ -154,7 +154,7 @@
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
             const email = this[0].value;
             const password = this[1].value;
 

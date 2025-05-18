@@ -15,8 +15,16 @@ class Group extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'group_users')->withTimestamps();
+        return $this->belongsToMany(User::class, 'group_users')->withTimestamps()->withPivot('status');
     }
+
+    public function usersDiterima()
+{
+    return $this->belongsToMany(User::class, 'group_users')
+                ->withPivot('status')
+                ->wherePivot('status', 'diterima');
+}
+
 
     public function messages()
     {

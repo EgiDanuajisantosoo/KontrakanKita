@@ -3,7 +3,7 @@
         <div class="flex justify-between">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="#" class="flex items-center py-4 px-2">
+                <a href="" class="flex items-center py-4 px-2">
                     <span class="font-semibold text-gray-500 text-lg">Logo</span>
                 </a>
             </div>
@@ -15,9 +15,9 @@
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Kontrakan</a>
                 <a href="/forums"
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Partner</a>
-                <a href=""
+                {{-- <a href=""
                     class="py-4 px-2 text-gray-500 font-semibold hover:text-[#003A9D] transition duration-300">Tentang
-                    Kita</a>
+                    Kita</a> --}}
             </div>
 
             {{-- <div class="relative mt-2">
@@ -41,13 +41,13 @@
             <div class="relative">
                 @if (Auth::check())
                     <button id="desktopDropdownButton"
-                        class="hidden md:flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-100 focus:outline-none">
+                        class="hidden md:flex items-center space-x-2 bg-white px-4 py-2 mt-3 rounded-lg shadow hover:bg-gray-100 focus:outline-none">
                         Profile
                     </button>
                     <div id="desktopDropDown"
                         class="hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
                         <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
-                        @if (Auth::user()->role == 'pemilik')
+                        @if (Auth::check() && Auth::user()->role == 'pemilik')
                         <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola
                             Kontrakan</a>
                         @endif
@@ -124,8 +124,7 @@
             <div id="mobileDropDown"
                 class="hidden text-sm absolute w-full bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
                 <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
-                @if (Auth::user()->role == 'pemilik')
-
+                @if (Auth::check() && Auth::user()->role == 'pemilik')
                 <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
                 @endif
                 <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Setting</a>

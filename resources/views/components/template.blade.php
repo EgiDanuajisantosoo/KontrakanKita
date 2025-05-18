@@ -40,9 +40,9 @@
     </div>
 
     <script>
-        if (window.location.pathname === "/") {
-            document.body.classList.add("overflow-hidden");
-        }
+        // if (window.location.pathname === "/") {
+        //     document.body.classList.add("overflow-hidden");
+        // }
 
         function toggleNav() {
             const nav = document.getElementById('mobile-nav');
