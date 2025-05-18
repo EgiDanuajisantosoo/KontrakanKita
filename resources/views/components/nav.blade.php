@@ -47,21 +47,15 @@
                     <div id="desktopDropDown"
                         class="hidden absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[150px]">
                         <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
-                        @if (Auth::check() && Auth::user()->role == 'pemilik')
-                        <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola
-                            Kontrakan</a>
+                        @if (Auth::user()->role == 'pemilik')
+                            <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
                         @endif
-
                         <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
-
-                        @if (Auth::check())
-                            <form action="{{ route('auth.logout') }}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                    class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
-                            </form>
-                        @else
-                        @endif
+                        <form action="{{ route('auth.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="block px-4 py-2 w-full text-gray-500 hover:bg-gray-100">Logout</button>
+                        </form>
                     </div>
                 @else
                     <a href="/auth" class="hidden md:block lg:block text-center px-4 py-2 text-gray-500 mt-2 hover:bg-gray-100">Login</a>
@@ -117,6 +111,7 @@
 
         <!-- Profile Dropdown in Mobile -->
         <div class="relative">
+            @if (Auth::check())
             <button id="mobileDropdownButton"
                 class="w-full text-left py-2 px-4 text-sm hover:bg-gray-200 focus:outline-none">
                 Lainnya
@@ -138,6 +133,9 @@
                     <a href="/auth" class="block text-center px-4 py-2 text-gray-500 hover:bg-gray-100">Login</a>
                 @endif
             </div>
+            @else
+                <a href="/auth" class="block text-center px-4 py-2 text-gray-500 hover:bg-gray-100">Login</a>
+            @endif
         </div>
     </div>
 
