@@ -4,7 +4,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
-@vite(['resources/assets/vendor/fonts/iconify/iconify.js'])
+{{-- @vite(['resources/assets/vendor/fonts/iconify/iconify.js']) --}}
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
 
 <!-- Core CSS -->
 @vite(['resources/assets/vendor/scss/core.scss','resources/assets/css/demo.css', 'resources/css/app.css'])
