@@ -1,11 +1,5 @@
 <!-- BEGIN: Vendor JS-->
 
-{{-- @vite([
-  'resources/assets/vendor/libs/jquery/jquery.js',
-  'resources/assets/vendor/libs/popper/popper.js',
-  'resources/assets/vendor/js/bootstrap.js',
-]) --}}
-
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('js/popper.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
