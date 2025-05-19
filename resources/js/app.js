@@ -1,4 +1,12 @@
 import './bootstrap';
+import '../../assets/vendor/libs/jquery/jquery.js';
+import '../assets/vendor/scss/core.scss';
+import '../assets/css/demo.css';
+import '../css/app.css';
+import '../../assets/vendor/libs/jquery/jquery.js';
+import '../../assets/vendor/libs/popper/popper.js';
+import '../../assets/vendor/js/bootstrap.js';
+
 
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
