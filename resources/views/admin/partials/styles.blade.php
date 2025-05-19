@@ -6,6 +6,7 @@
 
 {{-- @vite(['resources/assets/vendor/fonts/iconify/iconify.js']) --}}
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 
 <!-- Core CSS -->
