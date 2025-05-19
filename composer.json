@@ -59,6 +59,12 @@
         ],
         "post-install-cmd": [
             "@php artisan storage:link"
+        ],
+        "migrate-fresh": [
+            "@php artisan migrate:fresh"
+        ],
+        "post-seed-cmd": [
+            "@php artisan db:seed --class=FasilitasSeeder"
         ]
     },
     "extra": {
