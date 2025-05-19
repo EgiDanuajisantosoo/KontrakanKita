@@ -1,5 +1,6 @@
 @section('title', __('Dashboard'))
 <x-layouts.app :title="__('Dashboard')">
+    <script src="https://cdn.tailwindcss.com"></script>
     <div class="row g-4">
         <div class="col-lg-4">
           <div class="overflow-hidden rounded border" style="aspect-ratio: 16/6;">

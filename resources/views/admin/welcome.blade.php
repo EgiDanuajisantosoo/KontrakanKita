@@ -3,6 +3,7 @@
   @section('title', __('Welcome'))
   <head>
     @include('admin.partials.head')
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <div class="container-xxl flex-grow-1 container-p-y">

@@ -10,6 +10,7 @@
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon.png" href="/apple-touch-icon.png" type="image/png" sizes="180x180" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Carpatin Dashboard</title>
 </head>
 
