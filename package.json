@@ -2,8 +2,9 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "build": "vite build",
         "dev": "vite",
-        "build": "vite build --watch"
+        "watch": "vite build --watch"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.14",
