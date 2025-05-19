@@ -9,7 +9,9 @@
 
 
 <!-- Core CSS -->
-@vite(['resources/assets/vendor/scss/core.scss','resources/assets/css/demo.css', 'resources/css/app.css'])
+{{-- @vite(['resources/assets/vendor/scss/core.scss','resources/assets/css/demo.css', 'resources/css/app.css']) --}}
+<link rel="stylesheet" href="{{ asset('resources/assets/css/demo.css') }}">
+
 
 <!-- Vendor Styles -->
 @yield('vendor-style')
