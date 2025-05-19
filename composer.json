@@ -59,6 +59,9 @@
         ],
         "post-install-cmd": [
             "@php artisan storage:link"
+        ],
+        "queue-work": [
+            "@php artisan queue:work"
         ]
     },
     "extra": {

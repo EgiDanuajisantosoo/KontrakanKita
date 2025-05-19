@@ -34,10 +34,10 @@ class AuthController extends Controller
         }
 
         if($user->role == 'admin'){
-            auth()->login($user);
+            Auth::login($user);
             return redirect('/dashboard')->with('success', 'Login successful.');
         }else{
-            auth()->login($user);
+            Auth::login($user);
             return redirect('/')->with('success', 'Login successful.');
         }
 
@@ -71,7 +71,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        auth()->logout();
+        Auth::logout();
         return redirect('/')->with('success', 'Logout successful.');
     }
 
@@ -82,7 +82,7 @@ class AuthController extends Controller
 
     public function handleGoogleCallback()
 {
-    $googleUser = Socialite::driver('google')->stateless()->user();
+    $googleUser = Socialite::driver('google')->user();
     $user = User::where('email', $googleUser->getEmail())->first();
 
     if (!$user) {
