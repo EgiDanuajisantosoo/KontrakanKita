@@ -1,3 +1,4 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <div class="authentication-wrapper authentication-cover">
   <div class="authentication-inner row m-0">
     <!-- /Left Text -->

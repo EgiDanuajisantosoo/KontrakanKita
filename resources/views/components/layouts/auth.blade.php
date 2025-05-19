@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="layout-menu-fixed" data-base-url="{{url('/')}}" data-framework="laravel">
   <head>
     @include('admin.partials.head')
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body>
