@@ -92,6 +92,9 @@ class GroupController extends Controller
         $messages = $group->messages()->with('user')->oldest()->get();
         $booking = Booking::with('kontrakan')->where('group_id', $id)->first();
         $transaksiDp = TransaksiDp::where('user_id', Auth::id())->first();
+        $tranasksiPelunasan = TransaksiPelunasan::where('user_id', Auth::id())->first();
+
+        // dd(optional($booking)->count());
         $transaksiPelunasan = TransaksiPelunasan::where('user_id', Auth::id())->first();
         // dd($transaksiDp);
         $kontrakan = Kontrakan::where('provinsi', $group->provinsi)
@@ -100,7 +103,7 @@ class GroupController extends Controller
             ->get();
         // dd($kontrakan);
         if ($groupCheck->status == 'diterima') {
-            return view('Forum.detailForum', compact('transaksiPelunasan','transaksiDp','group', 'groupCheck', 'groupUser', 'messages', 'kontrakan', 'booking'));
+            return view('Forum.detailForum', compact('tranasksiPelunasan','transaksiPelunasan','transaksiDp','group', 'groupCheck', 'groupUser', 'messages', 'kontrakan', 'booking'));
         } else {
             return redirect('/forums')->withErrors(['user' => 'User sudah terdaftar di group.']);
         }

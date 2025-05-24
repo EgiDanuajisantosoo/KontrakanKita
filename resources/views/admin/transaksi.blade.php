@@ -1,6 +1,5 @@
-@section('title', __('transaksidp'))
-<x-layouts.app :title="__('admin.transaksi')">
-    <script src="https://cdn.tailwindcss.com"></script>
+<x-layouts.app>
+    <x-slot:content>
     <div class="w-full bg-white min-h-screen p-4">
         <div class="w-full overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 bg-white rounded-lg">
@@ -42,4 +41,5 @@
             </table>
         </div>
     </div>
+    </x-slot:content>
 </x-layouts.app>

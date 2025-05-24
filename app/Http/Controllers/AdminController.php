@@ -36,7 +36,7 @@ class AdminController extends Controller
 
     public function detaltransaksiDp($id)
     {
-        $booking = TransaksiDp::where('status', 'pending')->where('booking_id', $id)->get();
+        $booking = TransaksiDp::where('status', 'menunggu')->where('booking_id', $id)->get();
         // $booking = TransaksiDp::where('booking_id', $id)->get();
         // dd($booking);
         return view('admin.detailPembayaranForum', compact('booking'));

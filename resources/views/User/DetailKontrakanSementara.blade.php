@@ -9,13 +9,13 @@
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Gambar Utama -->
                     <div class="relative w-full">
-                        <img src="{{ asset('storage/' . $detailKontrakan->banner) }}"
-                            alt="Rumah Mewah" class="rounded-xl w-full h-64 sm:h-80 md:h-[450px] object-cover">
+                        <img src="{{ asset('storage/' . $detailKontrakan->banner) }}" alt="Rumah Mewah"
+                            class="rounded-xl w-full h-64 sm:h-80 md:h-[450px] object-cover">
                     </div>
 
                     <!-- Galeri Gambar -->
                     <div class="flex space-x-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-400">
-                        @foreach ($galleryKontrakan as $i=> $data)
+                        @foreach ($galleryKontrakan as $i => $data)
                             <img src="{{ asset('storage/' . $data->foto_kontrakan) }}"
                                 class="h-24 w-32 object-cover rounded-lg border-2 {{ $i == 0 ? 'border-blue-500' : 'border-transparent' }}" />
                         @endforeach
@@ -34,7 +34,10 @@
                                     d="M12 2C8.1 2 5 5.1 5 9c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7zM7 9c0-2.8 2.2-5 5-5s5 2.2 5 5c0 2.7-2.7 7.2-5 10.2C9.7 16.2 7 11.7 7 9z" />
                                 <circle cx="12" cy="9" r="2.5" />
                             </svg>
-                            {{ ucfirst(strtolower($detailKontrakan->provinsi)) }}, {{ ucfirst(strtolower($detailKontrakan->kota)) }}, {{ ucfirst(strtolower($detailKontrakan->kecamatan)) }}, {{ ucfirst(strtolower($detailKontrakan->kelurahan)) }}
+                            {{ ucfirst(strtolower($detailKontrakan->provinsi)) }},
+                            {{ ucfirst(strtolower($detailKontrakan->kota)) }},
+                            {{ ucfirst(strtolower($detailKontrakan->kecamatan)) }},
+                            {{ ucfirst(strtolower($detailKontrakan->kelurahan)) }}
                         </p>
                         <p class="text-blue-600 text-xl md:text-2xl font-semibold mt-3">
                             Rp {{ number_format($detailKontrakan->harga, 0, ',', '.') }}
@@ -53,12 +56,42 @@
                         </div>
                     </div>
                     <div class="space-y-3 pt-2">
-                        <button onclick="openBookingModal()"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
-                            Booking Sekarang
-                        </button>
-                        @if(isset($detailKontrakan->user) && isset($detailKontrakan->user->profile) && !empty($detailKontrakan->user->profile->no_telepon))
-                            <a href="https://api.whatsapp.com/send?phone={{ $detailKontrakan->user->profile->no_telepon }}">
+                        @if ($type == 'forum')
+                            @if ($booking == null && $userAdmin->role == 'admin')
+                                <button onclick="openBookingModal()"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                    Booking Sekarang
+                                </button>
+                            @elseif ($booking != null && $userAdmin->role == 'admin')
+                                <form action="{{ route('booking.Batal', [$detailKontrakan->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                        Batalkan Booking
+                                    </button>
+                                </form>
+                            @endif
+                        @elseif ($type == 'nonForum')
+                            @if ($booking == null)
+                                <button onclick="openBookingModal()"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                    Booking Sekarang
+                                </button>
+                            @else
+                                <form action="{{ route('booking.Batal', [$detailKontrakan->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                        Batalkan Booking
+                                    </button>
+                                </form>
+                            @endif
+                        @endif
+                        @if (isset($detailKontrakan->user) &&
+                                isset($detailKontrakan->user->profile) &&
+                                !empty($detailKontrakan->user->profile->no_telepon))
+                            <a
+                                href="https://api.whatsapp.com/send?phone={{ $detailKontrakan->user->profile->no_telepon }}">
                                 <button
                                     class="w-full bg-green-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-600 transition">
                                     WhatsApp</button>
@@ -86,9 +119,11 @@
                         <div>
                             <h3 class="text-lg font-semibold mb-4 text-gray-800">Fasilitas Utama</h3>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-gray-700 text-sm">
-                                <div class="flex items-center gap-2"><i class="fas fa-bed text-blue-500"></i> {{$detailKontrakan->kamar_mandi}} Kamar
+                                <div class="flex items-center gap-2"><i class="fas fa-bed text-blue-500"></i>
+                                    {{ $detailKontrakan->kamar_mandi }} Kamar
                                     Tidur</div>
-                                <div class="flex items-center gap-2"><i class="fas fa-bath text-blue-500"></i> {{$detailKontrakan->kamar_tidur}} Kamar
+                                <div class="flex items-center gap-2"><i class="fas fa-bath text-blue-500"></i>
+                                    {{ $detailKontrakan->kamar_tidur }} Kamar
                                     Mandi</div>
                             </div>
                         </div>
@@ -96,7 +131,8 @@
                             <h3 class="text-lg font-semibold mb-4 text-gray-800">Fasilitas Tambahan</h3>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
                                 @foreach ($detailKontrakan->fasilitas as $fasilitas)
-                                    <div class="flex items-center gap-2"><i class="fas fa-car"></i>{{ $fasilitas->nama_fasilitas }}</div>
+                                    <div class="flex items-center gap-2"><i
+                                            class="fas fa-car"></i>{{ $fasilitas->nama_fasilitas }}</div>
                                 @endforeach
                             </div>
                         </div>
@@ -197,14 +233,16 @@
                 <button onclick="closeBookingModal()"
                     class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
                 <h2 class="text-xl font-semibold mb-4 text-center">Form Booking Kontrakan</h2>
-                <form id="bookingForm" action="{{ route('booking.kontrakanForum', [$detailKontrakan->id]) }}" method="POST">
+                <form id="bookingForm"
+                    action="{{ $type == 'forum' ? route('booking.kontrakanForum', [$detailKontrakan->id]) : route('booking.kontrakanNonForum', [$detailKontrakan->id]) }}"
+                    method="POST">
                     @csrf
                     <label class="block mb-2 text-sm font-medium">Tanggal Check-in</label>
                     <input type="date" name="tanggal_checkin"
                         class="w-full border border-gray-300 rounded px-3 py-2 mb-4 text-sm" required />
                     <label class="block mb-2 text-sm font-medium">Lama Mengontrak</label>
-                    <select name="lama_mengontrak" class="w-full border border-gray-300 rounded px-3 py-2 mb-4 text-sm"
-                        required>
+                    <select name="lama_mengontrak"
+                        class="w-full border border-gray-300 rounded px-3 py-2 mb-4 text-sm" required>
                         <option value="">-- Pilih Durasi --</option>
                         <option value="6">6 Bulan</option>
                         <option value="12">1 Tahun</option>
@@ -213,12 +251,12 @@
                         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded w-full">Kirim
                         Booking</button>
 
-                        <script>
-                            function submitBookingForm() {
-                                const form = document.getElementById('bookingForm');
-                                form.submit();
-                            }
-                        </script>
+                    <script>
+                        function submitBookingForm() {
+                            const form = document.getElementById('bookingForm');
+                            form.submit();
+                        }
+                    </script>
                 </form>
             </div>
         </div>
@@ -253,8 +291,8 @@
 
             // Pastikan koordinat valid, jika tidak, fallback ke Jakarta
             if (isNaN(lat) || isNaN(lng)) {
-            lat = -6.200000;
-            lng = 106.816666;
+                lat = -6.200000;
+                lng = 106.816666;
             }
 
             // Inisialisasi peta dengan zoom lebih dekat (misal: 18)
@@ -262,13 +300,13 @@
 
             // Tambahkan layer dari OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
+                attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
             // Tambahkan marker ke lokasi
             L.marker([lat, lng]).addTo(map)
-            .bindPopup('Titik lokasi kontrakan')
-            .openPopup();
+                .bindPopup('Titik lokasi kontrakan')
+                .openPopup();
         </script>
         <script>
             function openBookingModal() {

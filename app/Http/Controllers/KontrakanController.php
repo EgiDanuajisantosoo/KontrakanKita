@@ -11,6 +11,7 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\Fasilitas;
 use App\Models\Group;
+use App\Models\GroupUser;
 
 class KontrakanController extends Controller
 {
@@ -114,10 +115,11 @@ class KontrakanController extends Controller
         // dd($detailKontrakan->user?->profile);
         $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
         $group = Auth::check() ? Auth::user()->groups->first() : null;
-        // dd($group);
+        $booking = Booking::where('user_id', Auth::id())->first();
+        // dd($booking);
         // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
         // return view('User.DetailKontrakan', compact('detailKontrakan', 'galleryKontrakan', 'type', 'group'));
-        return view('User.DetailKontrakanSementara', compact('detailKontrakan', 'galleryKontrakan', 'type', 'group'));
+        return view('User.DetailKontrakanSementara', compact('booking','detailKontrakan', 'galleryKontrakan', 'type', 'group'));
     }
 
     public function showForum($id)
@@ -126,9 +128,10 @@ class KontrakanController extends Controller
         $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
         $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
         $group = Auth::check() ? Auth::user()->groups->first() : null;
-        // dd($group);
+        $booking = Booking::where('user_id', Auth::id())->first();
+        $userAdmin = GroupUser::where('group_id', $group->id)->where('user_id',Auth::id())->first();
         // $fasilitasUmum = FasilitasUmum::where('kontrakan_id', $id)->with('kontrakans')->get();
-        return view('User.DetailKontrakanSementara', compact('detailKontrakan', 'galleryKontrakan', 'type', 'group'));
+        return view('User.DetailKontrakanSementara', compact('userAdmin','booking','detailKontrakan', 'galleryKontrakan', 'type', 'group'));
     }
 
     public function bookingForum(Request $request, $id)
@@ -169,6 +172,8 @@ class KontrakanController extends Controller
         Booking::create([
             'user_id' => Auth::id(),
             'kontrakan_id' => $id,
+            'tanggal_checkin' => $request->tanggal_checkin,
+            'lama_mengontrak' => $request->lama_mengontrak,
             'status' => 'pending',
         ]);
 
@@ -308,4 +313,23 @@ class KontrakanController extends Controller
 
         return response()->json($result);
     }
+
+    public function batalBooking($id)
+    {
+        $booking = Booking::where('user_id', Auth::id())->where('kontrakan_id', $id)->first();
+        if ($booking) {
+            $booking->delete();
+        }
+
+        return redirect()->back()->with('success', 'Booking cancelled successfully.');
+    }
+
+    public function verifikasiBooking()
+    {
+        $kontrakanUser = Kontrakan::where('user_id', Auth::id())->value('id');
+        $booking = Booking::where('status', 'pending')->where('kontrakan_id',$kontrakanUser)->with('kontrakan','group')->get();
+        // dd($booking);
+        return view('PemilikKontrakan.VerifikasiPemilikKontrakan', compact('booking'));
+    }
+
 }

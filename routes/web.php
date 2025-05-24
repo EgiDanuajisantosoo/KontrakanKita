@@ -40,6 +40,7 @@ Route::get('/detailKontrakan/{id}/nonForum',[KontrakanController::class, 'showNo
 Route::get('/detailKontrakan/{id}/forum',[KontrakanController::class, 'showForum'])->name('detail.kontrakanForum');
 Route::post('/detailKontrakan/{id}/forum',[KontrakanController::class, 'bookingForum'])->name('booking.kontrakanForum');
 Route::post('/detailKontrakan/{id}/nonForum',[KontrakanController::class, 'bookingNonForum'])->name('booking.kontrakanNonForum');
+Route::post('/detailKontrakan/{id}/batal',[KontrakanController::class, 'batalBooking'])->name('booking.Batal');
 
 
 Route::get('/KelolaKontrakan', function () {
@@ -57,24 +58,6 @@ Route::get('/Setting', function () {
 Route::get('/auth/redirect/google', function () {
     return Socialite::driver('google')->redirect();
 });
-
-
-
-// Route::get('/auth/callback/google', function () {
-//     $googleUser = Socialite::driver('google')->stateless()->user();
-
-//     $user = User::updateOrCreate([
-//         'email' => $googleUser->getEmail(),
-//     ], [
-//         'username' => Str::slug($googleUser->getName()) . rand(100, 999),
-//         'google_id' => $googleUser->getId(),
-//         'avatar' => $googleUser->getAvatar(),
-//     ]);
-
-//     Auth::login($user);
-
-//     return redirect('/');
-// });
 
 Route::get('/formGalery', function () {
     return view('User.formGalery');
@@ -100,6 +83,8 @@ Route::get('/DetailKontrakanSementara', function () {
 Route::get('/VerifikasiPemilikKontrakan', function () {
     return view('PemilikKontrakan.VerifikasiPemilikKontrakan');
 });
+
+Route::get('/verifikasiBooking', [KontrakanController::class, 'verifikasiBooking'])->name('booking.verifikasi');
 
 Route::get('/formPemilik', function () {
     $fasilitas = Fasilitas::all();
@@ -131,6 +116,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
 Route::post('/kirimDp', [TransaksiController::class, 'kirimDp'])->name('transkasi.dp');
+Route::post('/kirimPelunasan', [TransaksiController::class, 'kirimPelunasan'])->name('transkasi.pelunasan');
 
 //rekomendasi lokasi
 Route::get('/rekomendasi-lokasi', [RekomendasiController::class, 'rekomendasiKontrakan']);
@@ -149,16 +135,13 @@ Route::post('/tambahKontrakan', [KontrakanController::class, 'store'])->name('ko
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-// Route::get('/pengajuan', function () {
-//     return view('admin.pengajuan');
-// })->middleware(['auth', 'verified'])->name('pengajuan');
-// Route::get('/transaksi', function () {
-//     return view('admin.transaksi');
-// })->middleware(['auth', 'verified'])->name('admin.transaksi');
 
-Route::get('/pengajuan', [AdminController::class, 'pengajuan'])->name('pengajuan');
-Route::get('/transaksiDp', [AdminController::class, 'transaksiDp'])->name('admin.transaksi');
+
+Route::get('/pengajuan', [AdminController::class, 'pengajuan'])->name('pengajuan-kontrakan');
+Route::get('/transaksiDp', [AdminController::class, 'transaksiDp'])->name('pembayaran-dp');
 Route::get('/detaltransaksiDp/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiDp');
+Route::get('/transaksiPelunasan', [AdminController::class, 'transaksiDp'])->name('pembayaran-pelunasan');
+Route::get('/detaltransaksiPelunasan/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiPelunasan');
 Route::post('/terimaDp/{id}', [AdminController::class, 'terimaDp'])->name('terimaDp');
 Route::post('/pengajuan/{id}', [AdminController::class, 'terimaKontrakan'])->name('terimaKontrakan');
 
