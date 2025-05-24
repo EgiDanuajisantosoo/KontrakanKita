@@ -1,2 +1,2 @@
-web: vendor/bin/heroku-php-apache2 public/
-worker: php artisan queue:work --tries=3 --timeout=30
+web: bash -c "composer install && php artisan serve --port=$PORT"
+worker: php artisan queue:work
