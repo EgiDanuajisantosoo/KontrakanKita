@@ -1,2 +1,2 @@
-web: bash -c "composer install && php artisan serve --port=$PORT"
+web: vendor/bin/heroku-php-nginx public/
 worker: php artisan queue:work
