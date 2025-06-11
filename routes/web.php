@@ -154,7 +154,7 @@ Route::post('/editKontrakan/{id}', [KontrakanController::class, 'update'])->name
 
 
 Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-Route::get('/pengajuan', [AdminController::class, 'pengajuan'])->name('pengajuan-kontrakan');
+Route::get('/pengajuan', [AdminController::class, 'pengajuan'])->name('admin.pengajuan');
 Route::get('/transaksiDp', [AdminController::class, 'transaksiDp'])->name('pembayaran-dp');
 Route::get('/detaltransaksiDp/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiDp');
 Route::get('/transaksiPelunasan', [AdminController::class, 'transaksiDp'])->name('pembayaran-pelunasan');
