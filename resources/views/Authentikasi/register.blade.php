@@ -72,8 +72,7 @@
 
                 <!-- Username -->
                 <div>
-                    <label for="name"
-                        class="block text-left text-sm font-medium text-gray-700">Username</label>
+                    <label for="name" class="block text-left text-sm font-medium text-gray-700">Username</label>
                     <div class="relative">
                         <input type="text" name="username" id="name" required
                             class="w-full px-4 py-3 pl-11 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -105,8 +104,7 @@
 
                 <!-- Password -->
                 <div>
-                    <label for="password"
-                        class="block text-left text-sm font-medium text-gray-700">Password</label>
+                    <label for="password" class="block text-left text-sm font-medium text-gray-700">Password</label>
                     <div class="relative">
                         <input type="password" name="password" id="password" required
                             class="w-full px-4 py-3 pl-11 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -123,8 +121,8 @@
 
                 <!-- Confirm Password -->
                 <div>
-                    <label for="confirm_password"
-                        class="block text-left text-sm font-medium text-gray-700 ">Konfirmasi Password</label>
+                    <label for="confirm_password" class="block text-left text-sm font-medium text-gray-700 ">Konfirmasi
+                        Password</label>
                     <div class="relative">
                         <input type="password" name="confirm_password" id="confirm_password" required
                             class="w-full px-4 py-3 pl-11 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -146,7 +144,7 @@
                 </button>
             </form>
         </div>
-   <div class="w-full md:w-1/2 bg-blue-600 text-white flex items-center justify-center flex-col p-6">
+        <div class="w-full md:w-1/2 bg-blue-600 text-white flex items-center justify-center flex-col p-6">
             <h1 class="text-2xl sm:text-3xl font-bold mb-4">Selamat Datang!</h1>
             <p class="mb-6 text-center">Daftar untuk menikmati fitur terbaik kami</p>
             <button
@@ -236,10 +234,50 @@
                 onclick="toggleRegister()">SIGN UP</button>
         </div>
     </div>
+
+    @if ($errors->has('user'))
+        <div id="user-error"
+            class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50">
+            {{ $errors->first('user') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                var el = document.getElementById('user-error');
+                if (el) el.style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+
+    @if (session('success'))
+        <div id="success-alert" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+            <div
+                class="bg-emerald-100 border border-emerald-300 text-emerald-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
+        </div>
+        <script>
+            setTimeout(() => {
+                const alert = document.getElementById('success-alert');
+                if (alert) alert.style.display = 'none';
+            }, 2000);
+        </script>
+    @endif
+
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password.length < 8) {
+                e.preventDefault();
+                alert('Password harus minimal 8 karakter!');
+                return;
+            }
 
             if (password !== confirmPassword) {
                 e.preventDefault();

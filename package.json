@@ -20,8 +20,7 @@
         "@iconify/utils": "^2.3.0",
         "bootstrap": "^5.3.6",
         "jquery": "^3.7.1",
-        "laravel-echo": "^2.0.2",
+        "laravel-echo": "^2.1.5",
         "pusher-js": "^8.4.0"
     }
 }
-

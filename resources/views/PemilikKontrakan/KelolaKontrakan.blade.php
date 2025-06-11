@@ -24,7 +24,7 @@
                         <!-- Rumah Mewah -->
                         @if ($kontrakan->count() == 0)
                             <div class="bg-white rounded-lg shadow relative pb-10 flex items-center justify-center h-40">
-                                <h1 class="text-center text-gray-500 font-bold">Tidak ada data kontrakan</h1>
+                                <h1 class="text-center text-gray-500 font-bold">Sedang Menunggu verifikasi dari admin KontrakanKita</h1>
                             </div>
                         @endif
                         @foreach ($kontrakan as $data)
@@ -84,8 +84,9 @@
                                 <div class="flex justify-end gap-4 p-3 absolute bottom-0 right-0">
                                     <button onclick="showDeletePopup()"
                                         class="bg-red-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-red-700">Hapus</button>
-                                    <button onclick="showEditModal()"
-                                        class="bg-green-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-green-700">Edit</button>
+                                        <a href="/formPemilik/{{ $data->id }}" class="bg-green-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-green-700">Edit</a>
+                                    {{-- <button onclick="showEditModal()"
+                                        class="bg-green-600 text-white px-3 py-1 text-xs rounded-lg hover:bg-green-700">Edit</button> --}}
                                 </div>
                             </div>
                         @endforeach
@@ -120,167 +121,133 @@
 
                 <!-- Body Modal -->
                 <div class="p-6 space-y-6">
-                    <form action="{{ route('kontrakan.store') }}" method="post" enctype="multipart/form-data"
-                        class="space-y-6">
+                    <form action="{{ route('kontrakan.store') }}" method="post" enctype="multipart/form-data" class="p-6 md:p-10 lg:p-12 space-y-6">
                         @csrf
-
-                        <!-- Informasi Pemilik -->
                         <div>
-                            <h2 class="text-lg font-bold mb-4 text-gray-800">Informasi Pemilik</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nama Pemilik</label>
-                                    <input type="text" name="nama" class="w-full border rounded-lg p-2"
-                                        placeholder="Nama Pemilik">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Pemilik</label>
-                                    <input type="text" name="alamat" class="w-full border rounded-lg p-2"
-                                        placeholder="Alamat Pemilik">
-                                </div>
-                            </div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Kontrakan</label>
+                            <input type="text" name="nama" id="nama" placeholder="Nama Pemilik Kontrakan"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
                         </div>
-
-                        <!-- Informasi Kontrakan -->
                         <div>
-                            <h2 class="text-lg font-bold mb-4 text-gray-800">Detail Kontrakan</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Harga</label>
-                                    <input type="text" name="harga" class="w-full border rounded-lg p-2"
-                                        placeholder="Harga Kontrakan">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Harga DP</label>
-                                    <input type="text" name="uang_dp" class="w-full border rounded-lg p-2"
-                                        placeholder="Harga DP Kontrakan">
-                                </div>
-                                <div class="">
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Ukuran
-                                        Properti</label>
-                                    <input type="text" name="ukuran_properti" class="w-full border rounded-lg p-2"
-                                        placeholder="Contoh: 6x8 m²">
-                                </div>
-                                <div class="">
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Tipe Properti</label>
-                                    <input type="text" name="tipe_properti" class="w-full border rounded-lg p-2"
-                                        placeholder="Contoh: Kontrakan">
-                                </div>
-                            </div>
-
-                            <div class="md:col-span-2 mt-4">
-                                <label class="block text-sm font-medium text-gray-700  mb-2">Deskripsi</label>
-                                <textarea name="deskripsi" rows="4" class="w-full border rounded-lg p-2"
-                                    placeholder="Tuliskan deskripsi kontrakan..."></textarea>
-                            </div>
+                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat Pemilik Kontrakan</label>
+                            <input type="text" name="alamat" id="alamat" placeholder="Alamat Pemilik Kontrakan"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
                         </div>
-
-
-
-                        <!-- Fasilitas -->
-                        <div>
-                            <h2 class="text-lg font-bold mb-4 text-gray-800">Fasilitas</h2>
-                            <div class="space-y-2">
-                                {{-- <div>
-                                    <label class="block text-sm font-medium text-gray-700">Fasilitas Umum</label>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        @foreach ($fasilitas as $item)
-                                            <label class="flex items-center space-x-2">
-                                                <input type="checkbox" name="fasilitas[]"
-                                                    value="{{ $item->id }}">
-                                                <span>{{ $item->nama_fasilitas }}</span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div> --}}
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700  mb-2">Kamar
-                                            Tidur</label>
-                                        <input type="text" name="kamar_tidur" class="w-full border rounded-lg p-2"
-                                            placeholder="Jumlah Kamar">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700  mb-2">Kamar
-                                            Mandi</label>
-                                        <input type="text" name="kamar_mandi" class="w-full border rounded-lg p-2"
-                                            placeholder="Jumlah Kamar Mandi">
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Fasilitas
-                                        Tambahan</label>
-                                    <textarea name="fasilitas_tambahan" rows="3" class="w-full border rounded-lg p-2"
-                                        placeholder="Contoh: Listrik prabayar, taman, dapur..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Upload Gambar -->
                             <div>
-                                <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700  mb-2">Foto
-                                    Banner</label>
-                                <input type="file" name="foto_banner" id="foto_kontrakan"
-                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                                <label for="harga" class="block text-sm font-medium text-gray-700">Harga Kontrakan</label>
+                                <input type="text" name="harga" id="harga" placeholder="Harga Kontrakan"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
                             </div>
                             <div>
-                                <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700  mb-2">Foto
-                                    Kontrakan</label>
-                                <input type="file" name="foto_kontrakan[]" id="foto_kontrakan" multiple
-                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                                <label for="uang_dp" class="block text-sm font-medium text-gray-700">Uang Dp Kontrakan</label>
+                                <input type="text" name="uang_dp" id="uang_dp" placeholder="Uang DP Kontrakan"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
                             </div>
                         </div>
-
-                        <!-- Lokasi & Alamat -->
                         <div>
-                            <h2 class="text-lg font-bold mb-4 text-gray-800  mb-2">Lokasi</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Provinsi</label>
-                                    <select name="provinsi" id="provinsi" required
-                                        class="w-full border rounded-lg p-2">
-                                        <option value="">Pilih Provinsi</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kabupaten/Kota</label>
-                                    <select name="kota" id="kota" required
-                                        class="w-full border rounded-lg p-2">
-                                        <option value="">Pilih Kota</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kecamatan</label>
-                                    <select name="kecamatan" id="kecamatan" required
-                                        class="w-full border rounded-lg p-2">
-                                        <option value="">Pilih Kecamatan</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Kelurahan</label>
-                                    <select name="kelurahan" id="kelurahan" required
-                                        class="w-full border rounded-lg p-2">
-                                        <option value="">Pilih Kelurahan</option>
-                                    </select>
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700  mb-2">Lokasi pada
-                                        Peta</label>
-                                    <div id="editMap" class="w-full h-64 mt-2 rounded-lg border"></div>
-                                    <input type="hidden" name="latitude" id="editLatitude">
-                                    <input type="hidden" name="longitude" id="editLongitude">
-                                </div>
+                            <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                            <textarea name="deskripsi" id="deskripsi" cols="30" rows="4"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg px-4 text-xs py-2 mb-2 mt-2"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="tipe_properti" class="block text-sm font-medium text-gray-700">Tipe Properti</label>
+                                <input type="text" name="tipe_properti" id="tipe_properti" placeholder="Tipe Properti"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                            </div>
+                            <div>
+                                <label for="ukuran_properti" class="block text-sm font-medium text-gray-700">Ukuran Properti</label>
+                                <input type="text" name="ukuran_properti" id="ukuran_properti" placeholder="Ukuran Properti"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
                             </div>
                         </div>
-
-                        <!-- Tombol Kirim -->
-                        <div class="text-right">
-
-                            <button type="submit" id="saveEdit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">Ubah</button>
-
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="kamar_tidur" class="block text-sm font-medium text-gray-700">Kamar Tidur</label>
+                                <input type="text" name="kamar_tidur" id="kamar_tidur" placeholder="Kamar Tidur"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                            </div>
+                            <div>
+                                <label for="kamar_mandi" class="block text-sm font-medium text-gray-700">Kamar Mandi</label>
+                                <input type="text" name="kamar_mandi" id="kamar_mandi" placeholder="Kamar Mandi"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="foto_kontrakan" class="block text-sm font-medium text-gray-700">Foto Kontrakan</label>
+                            <input type="file" name="foto_kontrakan[]" id="foto_kontrakan" multiple
+                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                        </div>
+                        <div>
+                            <label for="foto_banner" class="block text-sm font-medium text-gray-700">Foto Banner</label>
+                            <input type="file" name="foto_banner" id="foto_banner"
+                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="provinsi" class="block text-sm font-medium text-gray-700">Provinsi</label>
+                                <select name="provinsi" id="Editprovinsi"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                                    <option value="">Pilih</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="kota" class="block text-sm font-medium text-gray-700">Kabupaten/Kota</label>
+                                <select name="kota" id="Editkota"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                                    <option value="">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="kecamatan" class="block text-sm font-medium text-gray-700">Kecamatan</label>
+                                <select name="kecamatan" id="Editkecamatan"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                                    <option value="">Pilih</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="kelurahan" class="block text-sm font-medium text-gray-700">Kelurahan/Desa</label>
+                                <select name="kelurahan" id="Editkelurahan"
+                                    class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2 mb-2 mt-2">
+                                    <option value="">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Lokasi pada Peta</label>
+                            <div id="editMap" class="mt-2 h-64 w-full border border-gray-300 rounded-md"></div>
+                            <div class="flex flex-col md:flex-row gap-2 mt-2">
+                                <input type="text" name="latitude" id="editLatitude" placeholder="Latitude"
+                                    class="w-full md:w-1/2 bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2">
+                                <input type="text" name="longitude" id="editLongitude" placeholder="Longitude"
+                                    class="w-full md:w-1/2 bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 text-xs py-2">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Fasilitas Umum</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                @foreach ($fasilitas as $item)
+                                    <div class="flex items-center mt-2">
+                                        <input type="checkbox" name="fasilitas[]" value="{{ $item->id }}"
+                                            class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                        <label for="fasilitas" class="ml-2 text-sm text-gray-700">{{ $item->nama_fasilitas }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div>
+                            <label for="fasilitas_tambahan" class="block text-sm font-medium text-gray-700">Fasilitas Tambahan</label>
+                            <textarea name="fasilitas_tambahan" id="fasilitas_tambahan" cols="30" rows="4"
+                                class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg px-4 text-xs py-2 mb-2 mt-2"></textarea>
+                        </div>
+                        <div class="flex justify-end pt-4">
+                            <button type="submit" style="background: #003A9D"
+                                class="py-3 px-8 md:px-16 font-bold border border-transparent shadow-sm text-sm rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Ubah
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -536,7 +503,183 @@
 
 
 
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script>
+    // let lo;
+    // let editProv = document.getElementById('Editprovinsi');
 
+    async function editData(provinsi, kota, kecamatan, kelurahan, lowonganId) {
+
+        // Panggilan API untuk mendapatkan provinsi
+        await axios.get('/api/provinces')
+            .then(response => {
+                let options = `<option value="">Pilih</option>`;
+                document.getElementById('Editprovinsi').innerHTML = '<option value="">Pilih</option>';
+                document.getElementById('Editkota').innerHTML = '<option value="">Pilih</option>';
+                document.getElementById('Editkecamatan').innerHTML = '<option value="">Pilih</option>';
+                document.getElementById('Editkelurahan').innerHTML = '<option value="">Pilih</option>';
+                // let itemProv = "";
+
+                response.data.forEach(item => {
+                    if (item.name == provinsi) {
+                        // console.log("Provinsi dari API:", item.name);
+                        // console.log("Provinsi yang dipilih:", provinsi);
+                        // itemProv = item.name;
+                        options +=
+                            `<option value="${item.name}" data-id="${item.id}" selected>${item.name}</option>`;
+                        // var option = document.createElement("option");
+                        // option.text = item.name;
+                        // option.selected = true;
+                        // document.getElementById('Editprovinsi').add(option);
+                    } else {
+                        options +=
+                            `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                        // var option = document.createElement("option");
+                        // option.text = item.name;
+                        // document.getElementById('Editprovinsi').add(option);
+                    }
+                });
+                // console.log(response.data)
+                document.getElementById('Editprovinsi').innerHTML = options;
+                // document.getElementById('Editprovinsi').click();
+                // document.querySelector(`[value="${itemProv}"]`).selected = true;
+                // console.log("Indeks Provinsi Terpilih: " + document.getElementById('Editprovinsi')
+                //     .selectedIndex)
+            });
+        let editProv = await document.getElementById('Editprovinsi');
+        // await console.log(editProv)
+        const idProv = await editProv.options[editProv.selectedIndex].getAttribute('data-id');
+        // await console.log(idProv)
+        await axios.get(`/api/regencies/${idProv}`)
+            .then(response => {
+                let options = `<option value="">Pilih</option>`;
+                // document.getElementById('Editkecamatan').innerHTML = '<option value="">Pilih</option>';
+                // document.getElementById('Editkelurahan').innerHTML = '<option value="">Pilih</option>';
+
+                response.data.forEach(item => {
+                    if (item.name == kota) {
+                        options +=
+                            `<option value="${item.name}" data-id="${item.id}" selected>${item.name}</option>`;
+                    } else {
+                        options +=
+                            `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                    }
+                });
+                document.getElementById('Editkota').innerHTML = options;
+            });
+
+        // Event listener untuk perubahan pada provinsi
+        document.getElementById('Editprovinsi').addEventListener('change', function() {
+            const id = this.options[this.selectedIndex].getAttribute('data-id');
+            axios.get(`/api/regencies/${id}`)
+                .then(responseA => {
+                    let options = `<option value="">Pilih</option>`;
+                    // document.getElementById('Editkecamatan').innerHTML = '<option value="">Pilih</option>';
+                    // document.getElementById('Editkelurahan').innerHTML = '<option value="">Pilih</option>';
+
+                    responseA.data.forEach(item => {
+                        if (item.name == kota) {
+                            options +=
+                                `<option value="${item.name}" data-id="${item.id}" selected>${item.name}</option>`;
+                        } else {
+                            options +=
+                                `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                        }
+                    });
+                    document.getElementById('Editkota').innerHTML = options;
+                });
+        });
+
+        let editKota = await document.getElementById("Editkota")
+        const idKota = await editKota.options[editKota.selectedIndex].getAttribute('data-id');
+        await axios.get(`/api/districts/${idKota}`)
+            .then(response => {
+                let options = `<option value="">Pilih</option>`;
+                document.getElementById('Editkelurahan').innerHTML = '<option value="">Pilih</option>';
+
+                response.data.forEach(item => {
+                    if (item.name == kecamatan) {
+                        options +=
+                            `<option value="${item.name}" data-id="${item.id}" selected>${item.name}</option>`;
+                    } else {
+                        options +=
+                            `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                    }
+                });
+                document.getElementById('Editkecamatan').innerHTML = options;
+            });
+
+        // Event listener untuk perubahan pada kota
+        document.getElementById('Editkota').addEventListener('change', function() {
+            const id = this.options[this.selectedIndex].getAttribute('data-id');
+            axios.get(`/api/districts/${id}`)
+                .then(response => {
+                    let options = `<option value="">Pilih</option>`;
+                    document.getElementById('Editkelurahan').innerHTML =
+                        '<option value="">Pilih</option>';
+
+                    response.data.forEach(item => {
+                        if (item.name == kecamatan) {
+                            options +=
+                                `<option value="${item.name}" data-id="${item.id}" selected>${item.name}</option>`;
+                        } else {
+                            options +=
+                                `<option value="${item.name}" data-id="${item.id}">${item.name}</option>`;
+                        }
+                    });
+                    document.getElementById('Editkecamatan').innerHTML = options;
+                });
+        });
+
+        let editKecamatan = await document.getElementById("Editkecamatan")
+        const idKecamatan = await editKecamatan.options[editKecamatan.selectedIndex].getAttribute('data-id');
+        await axios.get(`/api/villages/${idKecamatan}`)
+            .then(response => {
+                let options = `<option value="">Pilih</option>`;
+                response.data.forEach(item => {
+                    if (item.name == kelurahan) {
+                        options +=
+                            `<option value="${item.name}" selected>${item.name}</option>`;
+                    } else {
+                        options += `<option value="${item.name}">${item.name}</option>`;
+                    }
+                });
+                document.getElementById('Editkelurahan').innerHTML = options;
+            });
+
+        // Event listener untuk perubahan pada kecamatan
+        document.getElementById('Editkecamatan').addEventListener('change', function() {
+            const id = this.options[this.selectedIndex].getAttribute('data-id');
+            axios.get(`/api/villages/${id}`)
+                .then(response => {
+                    let options = `<option value="">Pilih</option>`;
+                    response.data.forEach(item => {
+                        if (item.name == kelurahan) {
+                            options +=
+                                `<option value="${item.name}" selected>${item.name}</option>`;
+                        } else {
+                            options += `<option value="${item.name}">${item.name}</option>`;
+                        }
+                    });
+                    document.getElementById('Editkelurahan').innerHTML = options;
+                });
+        });
+    }
+
+    // Event listener untuk tombol Edit Data
+    // document.getElementById('editDataBtn').addEventListener('click', function() {
+    //     let provinsi = document.getElementById('provinsi').value;
+    //     let kota = document.getElementById('kota').value;
+    //     let kecamatan = document.getElementById('kecamatan').value;
+    //     let kelurahan = document.getElementById('kelurahan').value;
+    //     // Memanggil fungsi editData dengan parameter yang dipilih
+    //     editData(provinsi, kota, kecamatan, kelurahan);
+    // });
+
+    // console.log(lo);
+    // alert(`Provinsi yang dipilih: ${lo}`);
+</script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
             function showDeletePopup() {

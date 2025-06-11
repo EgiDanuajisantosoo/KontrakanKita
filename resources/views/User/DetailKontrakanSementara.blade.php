@@ -48,20 +48,29 @@
                 <!-- Kolom Kanan: Info Agen dan Form Booking -->
                 <div class="bg-white rounded-xl shadow-md space-y-4 p-6 h-fit sticky top-6 lg:top-20">
                     <div class="flex items-center space-x-4">
-                        <img src="https://media.istockphoto.com/id/1485546774/id/foto/pria-botak-tersenyum-ke-kamera-berdiri-dengan-tangan-disilangkan.jpg?s=612x612&w=0&k=20&c=hzlkB5Rs5GS080SS5QU9e3pzweE4CIdRjbaMK-G25XQ="
+                        <img src="{{ asset('Assets/foto profile dan gallery/Kakashi Hatake.jpeg') }}"
                             class="w-12 h-12 rounded-full object-cover" />
                         <div>
-                            <h2 class="font-semibold text-base">Nama Pemilik</h2>
-                            <p class="text-sm text-gray-600">Pemilik Kontrakan</p>
+                            <h2 class="font-semibold text-base">{{ $detailKontrakan->user->username }}</h2>
+                            <p class="text-sm text-gray-600">{{$detailKontrakan->user->role}}</p>
                         </div>
                     </div>
                     <div class="space-y-3 pt-2">
                         @if ($type == 'forum')
                             @if ($booking == null && $userAdmin->role == 'admin')
-                                <button onclick="openBookingModal()"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
-                                    Booking Sekarang
-                                </button>
+                            @if (Auth::check() && Auth::user()->role == 'pencari')
+                                    <button onclick="openBookingModal()"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                        Booking Sekarang
+                                    </button>
+                                @else
+                                    <button
+                                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                        <a href="{{ route('login') }}" class="w-full text-center hover:cursor-pointer">
+                                            Booking Sekarang
+                                        </a>
+                                    </button>
+                                @endif
                             @elseif ($booking != null && $userAdmin->role == 'admin')
                                 <form action="{{ route('booking.Batal', [$detailKontrakan->id]) }}" method="POST">
                                     @csrf
@@ -73,10 +82,19 @@
                             @endif
                         @elseif ($type == 'nonForum')
                             @if ($booking == null)
-                                <button onclick="openBookingModal()"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
-                                    Booking Sekarang
-                                </button>
+                                @if (Auth::check() && Auth::user()->role == 'pencari')
+                                    <button onclick="openBookingModal()"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                        Booking Sekarang
+                                    </button>
+                                @else
+                                    <button
+                                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full mt-4">
+                                        <a href="{{ route('login') }}" class="w-full text-center hover:cursor-pointer">
+                                            Booking Sekarang
+                                        </a>
+                                    </button>
+                                @endif
                             @else
                                 <form action="{{ route('booking.Batal', [$detailKontrakan->id]) }}" method="POST">
                                     @csrf
@@ -181,7 +199,7 @@
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Lokasi</h3>
 
                         <div>
-                            <h3>Peta dengan Titik Lokasi</h3>
+                            {{-- <h3>Peta dengan Titik Lokasi</h3> --}}
                             <div id="map" class="h-[500px] w-full"></div>
                             <input type="hidden" id="latitude" value="{{ $detailKontrakan->latitude }}">
                             <input type="hidden" id="longitude" value="{{ $detailKontrakan->longitude }}">

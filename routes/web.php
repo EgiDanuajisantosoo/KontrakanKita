@@ -19,7 +19,13 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/lupaPassword' , function () {
+    return view('User.lupaPassword');
+});
+
 Route::get('/filter-kontrakan', [KontrakanController::class, 'filterKontrakan']);
+
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('auth.resetPassword');
 
 
 // Route::get('/Kontrakan', function () {
@@ -45,7 +51,7 @@ Route::post('/detailKontrakan/{id}/batal',[KontrakanController::class, 'batalBoo
 
 Route::get('/KelolaKontrakan', function () {
     $fasilitas = Fasilitas::all();
-    $kontrakan = Kontrakan::where('user_id',Auth::id())->get();
+    $kontrakan = Kontrakan::where('user_id',Auth::id())->where('status', 'tersedia')->get();
     // dd($kontrakan);
     return view('PemilikKontrakan/KelolaKontrakan', compact('fasilitas', 'kontrakan'));
 });
@@ -85,10 +91,18 @@ Route::get('/VerifikasiPemilikKontrakan', function () {
 });
 
 Route::get('/verifikasiBooking', [KontrakanController::class, 'verifikasiBooking'])->name('booking.verifikasi');
+Route::get('/terimaBooking/{id}', [KontrakanController::class, 'terimaBooking'])->name('booking.terima');
+Route::get('/tolakBooking/{id}', [KontrakanController::class, 'tolakBooking'])->name('booking.tolak');
 
 Route::get('/formPemilik', function () {
     $fasilitas = Fasilitas::all();
     return view('PemilikKontrakan.formPemilik', compact('fasilitas'));
+});
+
+Route::get('/formPemilik/{id}', function ($id) {
+    $fasilitas = Fasilitas::all();
+    $kontrakan = Kontrakan::findOrFail($id);
+    return view('PemilikKontrakan.editFormPemilik', compact('fasilitas','kontrakan'));
 });
 
 
@@ -120,6 +134,7 @@ Route::post('/kirimPelunasan', [TransaksiController::class, 'kirimPelunasan'])->
 
 //rekomendasi lokasi
 Route::get('/rekomendasi-lokasi', [RekomendasiController::class, 'rekomendasiKontrakan']);
+Route::get('/rekomendasi-forum', [RekomendasiController::class, 'rekomendasiForum']);
 
 //Profile user
 Route::get('/Profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -129,14 +144,16 @@ Route::put('/updateProfile', [ProfileController::class, 'update'])->name('profil
 
 //tambah kontrakan
 Route::post('/tambahKontrakan', [KontrakanController::class, 'store'])->name('kontrakan.store');
+Route::post('/editKontrakan/{id}', [KontrakanController::class, 'update'])->name('kontrakan.update');
 
 
 //admin
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 Route::get('/pengajuan', [AdminController::class, 'pengajuan'])->name('pengajuan-kontrakan');
 Route::get('/transaksiDp', [AdminController::class, 'transaksiDp'])->name('pembayaran-dp');
 Route::get('/detaltransaksiDp/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiDp');

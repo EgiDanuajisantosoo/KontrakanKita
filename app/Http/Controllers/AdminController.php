@@ -4,11 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Kontrakan;
 use App\Models\Booking;
+use App\Models\Group;
 use App\Models\TransaksiDp;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    public function index()
+    {
+        $data = [
+            'userAdmin' => User::where('role', 'admin')->get(),
+            'totalTersedia' => Kontrakan::where('status', 'tersedia')->count(),
+            'totalPending' => Kontrakan::where('status', 'pending')->count(),
+            'totalForum' => Group::count()
+        ];
+
+        return view('admin.dashboard', $data);
+    }
+
     public function pengajuan()
     {
 

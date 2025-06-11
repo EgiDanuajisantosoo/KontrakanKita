@@ -407,7 +407,7 @@
             <div class="container mx-auto p-5">
                 <div class="cardColumn ">
                     <div class=" mb-4 bg-[#003A9D] text-white w-auto sm:w-sm rounded-lg flex">
-                        <h2 class=" text-lg text-white font-semibold p-3">Kontrakan yang dipilih kontrakan anda</h2>
+                        <h2 class=" text-lg text-white font-semibold p-3">Kontrakan yang dipilih Forum anda</h2>
                     </div>
                     {{-- <div id="data" class="text-center text-gray-500 my-4 sm:text-left lg:text-left hidden"></div> --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -475,18 +475,167 @@
                                 </div>
                             </div>
                         </a>
-                        @if (isset($transaksiDp))
-                            @php
-                                $status = $transaksiDp->status;
-                                $statusPelunasan = $tranasksiPelunasan->status;
-                            @endphp
+                        @if (isset($booking) && $booking->status == 'pending')
+                            <div class="bg-yellow-100 rounded-lg p-4 mt-4 text-center">
+                                <p class="text-yellow-800 font-semibold">Anda telah memilih kontrakan {{ $booking->kontrakan->nama }}, tunggu
+                                    konfirmasi dari pemilik kontrakan untuk melanjukan pembayaran.</p>
+                            </div>
+                        @else
+                            @if (isset($transaksiDp))
+                                @php
+                                    $status = $transaksiDp->status;
+                                    $statusPelunasan = $tranasksiPelunasan->status;
+                                @endphp
 
-                            {{-- Form Pembayaran --}}
-                            @if ($transaksiDp->status == 'pending' || $transaksiPelunasan->status == 'pending')
+                                {{-- Form Pembayaran --}}
+                                @if ($transaksiDp->status == 'pending' || $transaksiPelunasan->status == 'pending')
+                                    <div
+                                        class="max-w-xl mx-auto w-full p-6 bg-white rounded-2xl shadow-md inset-shadow-xs space-y-6">
+                                        <h2 class="text-2xl font-bold text-gray-800">
+                                            {{ $status === 'pending' ? 'Pembayaran Dp Kontrakan' : 'Pelunasan Pembayaran Kontrakan' }}
+                                        </h2>
+                                        <!-- Info Kontrakan -->
+                                        <div class="border rounded-xl p-4 bg-gray-50">
+                                            <p class="text-sm text-gray-600">Nama Kontrakan:</p>
+                                            <p class="text-lg font-semibold text-gray-800">
+                                                {{ $booking->kontrakan->nama }}
+                                            </p>
+                                            <p class="text-sm text-gray-600 mt-2">Alamat:
+                                                {{ ucfirst(strtolower($booking->kontrakan->kota)) }},
+                                                {{ ucfirst(strtolower($booking->kontrakan->provinsi)) }}</p>
+                                        </div>
+                                        <!-- Ringkasan Pembayaran -->
+                                        <div class="border rounded-xl p-4 bg-gray-50 space-y-2">
+                                            @if ($booking->lama_mengontrak == 6)
+                                                <div class="flex justify-between">
+                                                    <span>Sewa per 6 Bulan</span>
+                                                    <span>Rp{{ number_format($booking->kontrakan->dp_harga / 2, 0, ',', '.') }}</span>
+                                                </div>
+                                            @else
+                                                <div class="flex justify-between">
+                                                    <span>Sewa per 1 Tahun</span>
+                                                    <span>Rp{{ number_format($booking->kontrakan->dp_harga / $groupUser->count(), 0, ',', '.') }}</span>
+                                                </div>
+                                            @endif
+                                            <hr />
+                                            @if ($booking->lama_mengontrak == 6 && $groupCheck->status === 'pending')
+                                                <div class="flex justify-between font-bold">
+                                                    <span>Total</span>
+                                                    <span>Rp{{ number_format($booking->kontrakan->dp_harga / 2 / $groupUser->count(), 0, ',', '.') }}</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <!-- Opsi Pembayaran (Full / DP) -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis
+                                                Pembayaran</label>
+                                            <select
+                                                class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                                <option>{{ $status === 'pending' ? 'DP' : 'Bayar Penuh' }}</option>
+                                            </select>
+                                        </div>
+                                        <!-- Metode Pembayaran -->
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Metode
+                                                Pembayaran</label>
+                                            <select id="metodePembayaranSelect"
+                                                class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                                <option value="tf">Transfer Bank</option>
+                                                <option value="qris">QRIS</option>
+                                            </select>
+                                        </div>
+                                        <div class="metodePembayaran mt-2">
+                                            <div class="qris hidden" id="gambarQris"></div>
+                                            <div class="noRek hidden" id="noRek"></div>
+                                        </div>
+                                        <!-- Form Upload Bukti Transfer -->
+                                        <form method="POST" action="{{ route('transkasi.pelunasan') }}"
+                                            enctype="multipart/form-data" class="space-y-4 mt-4">
+                                            @csrf
+                                            <input type="text" name="booking_id" value="{{ $booking->id }}"
+                                                hidden>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Upload Bukti
+                                                Transfer</label>
+                                            <input type="file" name="bukti_transfer" accept=".jpg,.jpeg,.png,.pdf"
+                                                class="block w-full text-sm text-gray-600
+                                        file:mr-4 file:py-2 file:px-4
+                                        file:rounded-full file:border-0
+                                        file:text-sm file:font-semibold
+                                        file:bg-indigo-50 file:text-indigo-700
+                                        hover:file:bg-indigo-100
+                                    "
+                                                required />
+                                            <p class="text-xs text-gray-500 mt-1">Format yang diperbolehkan: JPG, PNG,
+                                                PDF.
+                                                Max 2MB.</p>
+                                            @error('bukti_transfer')
+                                                <span class="text-xs text-red-500">{{ $message }}</span>
+                                            @enderror
+                                            <button type="submit"
+                                                class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl transition">
+                                                Kirim Pembayaran
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endif
+
+
+                                {{-- Detail Pembayaran --}}
+                                <div class="p-6 w-full bg-white rounded-2xl shadow-md space-y-6">
+                                    <h2 class="text-2xl font-bold text-gray-800">Detail Pembayaran</h2>
+                                    @php
+                                        $detailStatus = [
+                                            'pending' => 'bg-red-100',
+                                            'menunggu' => 'bg-yellow-100',
+                                            'lunas' => 'bg-green-100',
+                                        ];
+                                    @endphp
+                                    <div
+                                        class="border rounded-xl p-4 bg-gray-50 space-y-2 {{ $detailStatus[$status] ?? 'bg-gray-100' }}">
+                                        <p class="flex justify-center text-xl font-bold">
+                                            Pembayaran Dp
+                                        </p>
+                                        <div class="flex justify-between">
+                                            <span>Sewa per bulan</span>
+                                            <span>Rp1.000.000</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Biaya admin</span>
+                                            <span>Rp25.000</span>
+                                        </div>
+                                        <hr />
+                                        <div class="flex justify-between font-bold">
+                                            <span>Total</span>
+                                            <span>Rp1.025.000</span>
+                                        </div>
+                                    </div>
+                                    @if ($status !== 'pending')
+                                        <div
+                                            class="border rounded-xl p-4 bg-gray-50 space-y-2 {{ $detailStatus[$statusPelunasan] ?? 'bg-gray-100' }}">
+                                            <p class="flex justify-center text-xl font-bold">
+                                                Pembayaran Dp
+                                            </p>
+                                            <div class="flex justify-between">
+                                                <span>Sewa per bulan</span>
+                                                <span>Rp1.000.000</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span>Biaya admin</span>
+                                                <span>Rp25.000</span>
+                                            </div>
+                                            <hr />
+                                            <div class="flex justify-between font-bold">
+                                                <span>Total</span>
+                                                <span>Rp1.025.000</span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @else
                                 <div
                                     class="max-w-xl mx-auto w-full p-6 bg-white rounded-2xl shadow-md inset-shadow-xs space-y-6">
                                     <h2 class="text-2xl font-bold text-gray-800">
-                                        {{ $status === 'pending' ? 'Pembayaran Dp Kontrakan' : 'Pelunasan Pembayaran Kontrakan' }}
+                                        Pembayaran Dp Kontrakan
                                     </h2>
                                     <!-- Info Kontrakan -->
                                     <div class="border rounded-xl p-4 bg-gray-50">
@@ -511,7 +660,7 @@
                                             </div>
                                         @endif
                                         <hr />
-                                        @if ($booking->lama_mengontrak == 6 && $status === 'pending')
+                                        @if ($booking->lama_mengontrak == 6 && $groupCheck->status === 'pending')
                                             <div class="flex justify-between font-bold">
                                                 <span>Total</span>
                                                 <span>Rp{{ number_format($booking->kontrakan->dp_harga / 2 / $groupUser->count(), 0, ',', '.') }}</span>
@@ -524,7 +673,7 @@
                                             Pembayaran</label>
                                         <select
                                             class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                            <option>{{ $status === 'pending' ? 'DP' : 'Bayar Penuh' }}</option>
+                                            <option>DP</option>
                                         </select>
                                     </div>
                                     <!-- Metode Pembayaran -->
@@ -542,7 +691,7 @@
                                         <div class="noRek hidden" id="noRek"></div>
                                     </div>
                                     <!-- Form Upload Bukti Transfer -->
-                                    <form method="POST" action="{{ route('transkasi.pelunasan') }}"
+                                    <form method="POST" action="{{ route('transkasi.dp') }}"
                                         enctype="multipart/form-data" class="space-y-4 mt-4">
                                         @csrf
                                         <input type="text" name="booking_id" value="{{ $booking->id }}" hidden>
@@ -558,7 +707,8 @@
                                     "
                                             required />
                                         <p class="text-xs text-gray-500 mt-1">Format yang diperbolehkan: JPG, PNG, PDF.
-                                            Max 2MB.</p>
+                                            Max
+                                            2MB.</p>
                                         @error('bukti_transfer')
                                             <span class="text-xs text-red-500">{{ $message }}</span>
                                         @enderror
@@ -569,145 +719,8 @@
                                     </form>
                                 </div>
                             @endif
-
-
-                            {{-- Detail Pembayaran --}}
-                            <div class="p-6 w-full bg-white rounded-2xl shadow-md space-y-6">
-                                <h2 class="text-2xl font-bold text-gray-800">Detail Pembayaran</h2>
-                                @php
-                                    $detailStatus = [
-                                        'pending' => 'bg-red-100',
-                                        'menunggu' => 'bg-yellow-100',
-                                        'lunas' => 'bg-green-100',
-                                    ];
-                                @endphp
-                                <div
-                                    class="border rounded-xl p-4 bg-gray-50 space-y-2 {{ $detailStatus[$status] ?? 'bg-gray-100' }}">
-                                    <p class="flex justify-center text-xl font-bold">
-                                        Pembayaran Dp
-                                    </p>
-                                    <div class="flex justify-between">
-                                        <span>Sewa per bulan</span>
-                                        <span>Rp1.000.000</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>Biaya admin</span>
-                                        <span>Rp25.000</span>
-                                    </div>
-                                    <hr />
-                                    <div class="flex justify-between font-bold">
-                                        <span>Total</span>
-                                        <span>Rp1.025.000</span>
-                                    </div>
-                                </div>
-                                @if ($status !== 'pending')
-                                    <div
-                                        class="border rounded-xl p-4 bg-gray-50 space-y-2 {{ $detailStatus[$statusPelunasan] ?? 'bg-gray-100' }}">
-                                        <p class="flex justify-center text-xl font-bold">
-                                            Pembayaran Dp
-                                        </p>
-                                        <div class="flex justify-between">
-                                            <span>Sewa per bulan</span>
-                                            <span>Rp1.000.000</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span>Biaya admin</span>
-                                            <span>Rp25.000</span>
-                                        </div>
-                                        <hr />
-                                        <div class="flex justify-between font-bold">
-                                            <span>Total</span>
-                                            <span>Rp1.025.000</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @else
-                            <div
-                                class="max-w-xl mx-auto w-full p-6 bg-white rounded-2xl shadow-md inset-shadow-xs space-y-6">
-                                <h2 class="text-2xl font-bold text-gray-800">
-                                    Pembayaran Dp Kontrakan
-                                </h2>
-                                <!-- Info Kontrakan -->
-                                <div class="border rounded-xl p-4 bg-gray-50">
-                                    <p class="text-sm text-gray-600">Nama Kontrakan:</p>
-                                    <p class="text-lg font-semibold text-gray-800">{{ $booking->kontrakan->nama }}</p>
-                                    <p class="text-sm text-gray-600 mt-2">Alamat:
-                                        {{ ucfirst(strtolower($booking->kontrakan->kota)) }},
-                                        {{ ucfirst(strtolower($booking->kontrakan->provinsi)) }}</p>
-                                </div>
-                                <!-- Ringkasan Pembayaran -->
-                                <div class="border rounded-xl p-4 bg-gray-50 space-y-2">
-                                    @if ($booking->lama_mengontrak == 6)
-                                        <div class="flex justify-between">
-                                            <span>Sewa per 6 Bulan</span>
-                                            <span>Rp{{ number_format($booking->kontrakan->dp_harga / 2, 0, ',', '.') }}</span>
-                                        </div>
-                                    @else
-                                        <div class="flex justify-between">
-                                            <span>Sewa per 1 Tahun</span>
-                                            <span>Rp{{ number_format($booking->kontrakan->dp_harga / $groupUser->count(), 0, ',', '.') }}</span>
-                                        </div>
-                                    @endif
-                                    <hr />
-                                    @if ($booking->lama_mengontrak == 6 && $status === 'pending')
-                                        <div class="flex justify-between font-bold">
-                                            <span>Total</span>
-                                            <span>Rp{{ number_format($booking->kontrakan->dp_harga / 2 / $groupUser->count(), 0, ',', '.') }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                                <!-- Opsi Pembayaran (Full / DP) -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis
-                                        Pembayaran</label>
-                                    <select
-                                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                        <option>DP</option>
-                                    </select>
-                                </div>
-                                <!-- Metode Pembayaran -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Metode
-                                        Pembayaran</label>
-                                    <select id="metodePembayaranSelect"
-                                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                        <option value="tf">Transfer Bank</option>
-                                        <option value="qris">QRIS</option>
-                                    </select>
-                                </div>
-                                <div class="metodePembayaran mt-2">
-                                    <div class="qris hidden" id="gambarQris"></div>
-                                    <div class="noRek hidden" id="noRek"></div>
-                                </div>
-                                <!-- Form Upload Bukti Transfer -->
-                                <form method="POST" action="{{ route('transkasi.dp') }}"
-                                    enctype="multipart/form-data" class="space-y-4 mt-4">
-                                    @csrf
-                                    <input type="text" name="booking_id" value="{{ $booking->id }}" hidden>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload Bukti
-                                        Transfer</label>
-                                    <input type="file" name="bukti_transfer" accept=".jpg,.jpeg,.png,.pdf"
-                                        class="block w-full text-sm text-gray-600
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-full file:border-0
-                                        file:text-sm file:font-semibold
-                                        file:bg-indigo-50 file:text-indigo-700
-                                        hover:file:bg-indigo-100
-                                    "
-                                        required />
-                                    <p class="text-xs text-gray-500 mt-1">Format yang diperbolehkan: JPG, PNG, PDF. Max
-                                        2MB.</p>
-                                    @error('bukti_transfer')
-                                        <span class="text-xs text-red-500">{{ $message }}</span>
-                                    @enderror
-                                    <button type="submit"
-                                        class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl transition">
-                                        Kirim Pembayaran
-                                    </button>
-                                </form>
-                            </div>
                         @endif
+
                     </div>
                 </div>
             </div>
@@ -760,7 +773,7 @@
 
         {{-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/laravel-echo/dist/echo.iife.js"></script> --}}
-        <script src="{{ asset('build/assets/app-6u8c6XXg.js ') }}"></script>
+        <script src="{{ asset('build/assets/app-C3ibBmR9.js') }}"></script>
         <script>
             window.Echo.channel('group.{{ $group->id }}')
                 .listen('MessageSent', (event) => {

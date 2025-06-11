@@ -10,11 +10,11 @@
     @vite('resources/css/app.css')
     <title>{{ $title }}</title>
     <style>
-         .active {
-        color: #003A9D !important;
-        font-weight: bold;
-        border-bottom: 3px solid #003A9D;
-    }
+        .active {
+            color: #003A9D !important;
+            font-weight: bold;
+            border-bottom: 3px solid #003A9D;
+        }
     </style>
 
     {{-- <style>
@@ -67,7 +67,7 @@
         window.addEventListener('load', updateNavbarOpacity);
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const navLinks = document.querySelectorAll("nav a"); // Pilih semua link di navbar
             const currentPath = window.location.pathname; // Ambil path dari URL saat ini
 
@@ -78,6 +78,15 @@
             });
         });
     </script>
+    {{-- <script>
+        fetch('https://cfbe-36-69-194-228.ngrok-free.app/', {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            })
+            .then(response => response.text())
+            .then(data => console.log(data));
+    </script> --}}
 
 </body>
 

@@ -20,6 +20,7 @@ class GroupController extends Controller
     {
         $groups = Group::with('messages.user', 'users','usersDiterima')->get();
         $checkGroup = GroupUser::where('user_id', Auth::id())->first();
+        // dd($groups);
         // dd($checkGroup);
         // dd($checkGroup);
         return view('PencariKontrakan.Forum', compact('groups', 'checkGroup'));

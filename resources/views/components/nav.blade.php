@@ -49,6 +49,7 @@
                         <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
                         @if (Auth::user()->role == 'pemilik')
                             <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
+                            <a href="/verifikasiBooking" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Verifikasi Booking</a>
                         @endif
                         <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Settings</a>
                         <form action="{{ route('auth.logout') }}" method="POST">
@@ -121,6 +122,7 @@
                 <a href="/Profile" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Profile</a>
                 @if (Auth::check() && Auth::user()->role == 'pemilik')
                 <a href="/KelolaKontrakan" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Kelola Kontrakan</a>
+                <a href="/verifikasiBooking" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Verifikasi Booking</a>
                 @endif
                 <a href="/Setting" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">Setting</a>
                 @if (Auth::check())

@@ -294,5 +294,22 @@
             </div>
         </section>
 
+        @if(session('success'))
+            <div id="success-alert" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+                <div class="bg-emerald-100 border border-emerald-300 text-emerald-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+            </div>
+            <script>
+                setTimeout(() => {
+                    const alert = document.getElementById('success-alert');
+                    if (alert) alert.style.display = 'none';
+                }, 2000);
+            </script>
+        @endif
+
     </x-slot:content>
 </x-template>

@@ -31,7 +31,6 @@ class RekomendasiController extends Controller
 public function getNearbyForum($userLat, $userLng, $radius)
 {
     return DB::table('groups')
-        ->where('status', 'tersedia')
         ->select(
             '*',
             DB::raw("

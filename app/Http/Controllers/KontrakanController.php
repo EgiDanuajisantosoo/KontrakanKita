@@ -30,7 +30,7 @@ class KontrakanController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'harga' => 'required|numeric',
@@ -52,11 +52,13 @@ class KontrakanController extends Controller
             'fasilitas.*' => 'exists:fasilitas,id',
             'fasilitas_tambahan' => 'nullable|string',
         ]);
-        // dd($request->all());
+
+        // Jika validasi gagal, Laravel otomatis redirect back dengan error dan input lama
 
         if ($request->hasFile('foto_banner')) {
-            // $galleryPath = $image->store('galleryKontrakan', 'public');
             $galleryPath = $request->file('foto_banner')->store('galleryKontrakan', 'public');
+        } else {
+            $galleryPath = null;
         }
 
         $kontrakan = new Kontrakan();
@@ -88,10 +90,8 @@ class KontrakanController extends Controller
                 $galleryKontrakan->kontrakan_id = $kontrakan->id;
                 $galleryKontrakan->foto_kontrakan = $galleryPath;
                 $galleryKontrakan->save();
-                // dd($galleryKontrakan);
             }
         }
-
 
         if ($request->has('fasilitas')) {
             $kontrakan->fasilitasUmum()->sync($request->fasilitas);
@@ -103,7 +103,6 @@ class KontrakanController extends Controller
             $dataUser->save();
         }
 
-        // dd($request->all());
         return redirect()->route('kontrakan.index')->with('success', 'Kontrakan created successfully.');
     }
 
@@ -111,8 +110,8 @@ class KontrakanController extends Controller
     public function showNonForum($id)
     {
         $type = 'nonForum';
-        $detailKontrakan = Kontrakan::with('fasilitas')->findOrFail($id);
-        // dd($detailKontrakan->user?->profile);
+        $detailKontrakan = Kontrakan::with('fasilitas', 'user')->findOrFail($id);
+        // dd($detailKontrakan->user->username);
         $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
         $group = Auth::check() ? Auth::user()->groups->first() : null;
         $booking = Booking::where('user_id', Auth::id())->first();
@@ -190,16 +189,19 @@ class KontrakanController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
             'harga' => 'required|numeric',
-            'deskripsi' => 'nullable|string',
-            'tipe_properti' => 'required|string|in:kontrakan,apartemen',
-            'ukuran_properti' => 'required|string',
+            'uang_dp' => 'required|numeric',
+            'deskripsi' => 'required|string',
+            'tipe_properti' => 'required|string',
             'kamar_tidur' => 'required|integer',
             'kamar_mandi' => 'required|integer',
-            'foto_kontrakan.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ukuran_properti' => 'required|string',
+            'foto_kontrakan.*' => 'image|mimes:jpeg,jpg,png,gif,webp',
+            'foto_banner' => 'image|mimes:jpeg,png,jpg,gif',
             'provinsi' => 'required|string',
             'kota' => 'required|string',
             'kecamatan' => 'required|string',
@@ -212,9 +214,16 @@ class KontrakanController extends Controller
         ]);
 
         $kontrakan = Kontrakan::findOrFail($id);
+
+        if ($request->hasFile('foto_banner')) {
+            $galleryPath = $request->file('foto_banner')->store('galleryKontrakan', 'public');
+            $kontrakan->banner = $galleryPath;
+        }
+
         $kontrakan->nama = $request->nama;
         $kontrakan->alamat = $request->alamat;
         $kontrakan->harga = $request->harga;
+        $kontrakan->dp_harga = $request->uang_dp;
         $kontrakan->deskripsi = $request->deskripsi;
         $kontrakan->tipe_properti = $request->tipe_properti;
         $kontrakan->ukuran_properti = $request->ukuran_properti;
@@ -227,10 +236,23 @@ class KontrakanController extends Controller
         $kontrakan->latitude = $request->latitude;
         $kontrakan->longitude = $request->longitude;
         $kontrakan->fasilitas_tambahan = $request->fasilitas_tambahan;
-
         $kontrakan->save();
 
-        return redirect()->route('kontrakan.index')->with('success', 'Kontrakan updated successfully.');
+        if ($request->hasFile('foto_kontrakan')) {
+            foreach ($request->file('foto_kontrakan') as $image) {
+                $galleryPath = $image->store('galleryKontrakan', 'public');
+                $galleryKontrakan = new GaleryKontrakan();
+                $galleryKontrakan->kontrakan_id = $kontrakan->id;
+                $galleryKontrakan->foto_kontrakan = $galleryPath;
+                $galleryKontrakan->save();
+            }
+        }
+
+        if ($request->has('fasilitas')) {
+            $kontrakan->fasilitasUmum()->sync($request->fasilitas);
+        }
+
+        return redirect('/KelolaKontrakan')->with('success', 'Kontrakan updated successfully.');
     }
 
     public function destroy($id)
@@ -238,7 +260,7 @@ class KontrakanController extends Controller
         $kontrakan = Kontrakan::findOrFail($id);
         $kontrakan->delete();
 
-        return redirect()->route('kontrakan.index')->with('success', 'Kontrakan deleted successfully.');
+        return redirect('/KelolaKontrakan')->with('success', 'Kontrakan deleted successfully.');
     }
 
     public function search(Request $request)
@@ -328,8 +350,25 @@ class KontrakanController extends Controller
     {
         $kontrakanUser = Kontrakan::where('user_id', Auth::id())->value('id');
         $booking = Booking::where('status', 'pending')->where('kontrakan_id',$kontrakanUser)->with('kontrakan','group')->get();
+        $bookingTerima = Booking::where('status', 'diterima')->where('kontrakan_id',$kontrakanUser)->with('kontrakan','group')->get();
         // dd($booking);
-        return view('PemilikKontrakan.VerifikasiPemilikKontrakan', compact('booking'));
+        return view('PemilikKontrakan.VerifikasiPemilikKontrakan', compact('booking','bookingTerima'));
+    }
+
+    public function terimaBooking($id){
+        $booking = Booking::findOrFail($id);
+        $booking->status = 'diterima';
+        $booking->save();
+
+        return redirect()->back();
+    }
+
+    public function tolakBooking($id) {
+        $booking = Booking::findOrFail($id);
+        $booking->status = 'ditolak';
+        $booking->save();
+
+        return redirect()->back();
     }
 
 }

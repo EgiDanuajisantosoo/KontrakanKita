@@ -137,8 +137,6 @@
                             <option value="5">5 km</option>
                             <option value="10">10 km</option>
                         </select>
-
-
                     </div>
                     <div id="loading" class="text-center text-gray-500 my-4 sm:text-left lg:text-left">Loading
                         rekomendasi...</div>
