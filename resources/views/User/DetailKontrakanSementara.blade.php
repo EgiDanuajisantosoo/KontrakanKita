@@ -46,7 +46,10 @@
                 </div>
 
                 <!-- Kolom Kanan: Info Agen dan Form Booking -->
-                <div class="bg-white rounded-xl shadow-md space-y-4 p-6 h-fit sticky top-6 lg:top-20">
+                @if (Auth::check() && Auth::user()->role == 'pemilik')
+
+                @else
+                    <div class="bg-white rounded-xl shadow-md space-y-4 p-6 h-fit sticky top-6 lg:top-20">
                     <div class="flex items-center space-x-4">
                         <img src="{{ asset('Assets/foto profile dan gallery/Kakashi Hatake.jpeg') }}"
                             class="w-12 h-12 rounded-full object-cover" />
@@ -57,6 +60,9 @@
                     </div>
                     <div class="space-y-3 pt-2">
                         @if ($type == 'forum')
+                        {{-- @if (Auth::check() && Auth::user()->role == 'pemilik')
+
+                        @endif --}}
                             @if ($booking == null && $userAdmin->role == 'admin')
                             @if (Auth::check() && Auth::user()->role == 'pencari')
                                     <button onclick="openBookingModal()"
@@ -71,7 +77,7 @@
                                         </a>
                                     </button>
                                 @endif
-                            @elseif ($booking != null && $userAdmin->role == 'admin')
+                            @elseif ($booking->status == 'pending' && $userAdmin->role == 'admin')
                                 <form action="{{ route('booking.Batal', [$detailKontrakan->id]) }}" method="POST">
                                     @csrf
                                     <button type="submit"
@@ -126,6 +132,8 @@
                             WhatsApp</button> --}}
                     </div>
                 </div>
+                @endif
+
             </div>
 
             <!-- Fasilitas, Deskripsi, Spesifikasi, Lokasi -->

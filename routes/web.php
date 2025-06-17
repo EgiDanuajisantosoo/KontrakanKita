@@ -40,8 +40,10 @@ Route::get('/Kontrakan', [KontrakanController::class, 'index'])->name('kontrakan
 
 
 // Route::get('/DetailKontrakan', function () {
-//     return view('User/DetailKontrakan')->name('detail.kontrakan');
+//     return view('User.DetailKontrakan')->name('detail.kontrakan');
 // });
+
+Route::get('/detailKontrakan/{id}',[KontrakanController::class, 'showDetail'])->name('detail.kontrakan');
 Route::get('/detailKontrakan/{id}/nonForum',[KontrakanController::class, 'showNonForum'])->name('detail.kontrakanNonForum');
 Route::get('/detailKontrakan/{id}/forum',[KontrakanController::class, 'showForum'])->name('detail.kontrakanForum');
 Route::post('/detailKontrakan/{id}/forum',[KontrakanController::class, 'bookingForum'])->name('booking.kontrakanForum');
@@ -53,7 +55,13 @@ Route::get('/KelolaKontrakan', function () {
     $fasilitas = Fasilitas::all();
     $kontrakan = Kontrakan::where('user_id',Auth::id())->where('status', 'tersedia')->get();
     // dd($kontrakan);
-    return view('PemilikKontrakan/KelolaKontrakan', compact('fasilitas', 'kontrakan'));
+    return view('PemilikKontrakan.KelolaKontrakan', compact('fasilitas', 'kontrakan'));
+});
+
+Route::get('/KelolaKontrakan/{id}', function ($id) {
+    $fasilitas = Fasilitas::all();
+    $kontrakan = Kontrakan::findOrFail($id);
+    return view('PemilikKontrakan.editKelolaKontrakan', compact('fasilitas', 'kontrakan'));
 });
 
 Route::get('/Setting', function () {
@@ -108,6 +116,7 @@ Route::get('/formPemilik/{id}', function ($id) {
 
 Route::get('/filter-forum', [ForumController::class, 'filter'])->name('forums.filter');
 Route::get('/forums', [GroupController::class, 'index']);
+Route::delete('/forums/{id}/keluar', [GroupController::class, 'keluarGroup'])->name('forums.keluar');
 Route::middleware('auth')->group(function () {
     Route::get('/forums/create', [GroupController::class, 'create']);
     Route::post('/forums', [GroupController::class, 'store']);
@@ -156,18 +165,18 @@ Route::post('/editKontrakan/{id}', [KontrakanController::class, 'update'])->name
 Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 Route::get('/pengajuan', [AdminController::class, 'pengajuan'])->name('pengajuan-kontrakan');
 Route::get('/transaksiDp', [AdminController::class, 'transaksiDp'])->name('pembayaran-dp');
-Route::get('/detaltransaksiDp/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiDp');
+Route::get('/detailtransaksiDp/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiDp');
 Route::get('/transaksiPelunasan', [AdminController::class, 'transaksiDp'])->name('pembayaran-pelunasan');
 Route::get('/detaltransaksiPelunasan/{id}', [AdminController::class, 'detaltransaksiDp'])->name('admin.detailtransaksiPelunasan');
 Route::post('/terimaDp/{id}', [AdminController::class, 'terimaDp'])->name('terimaDp');
 Route::post('/pengajuan/{id}', [AdminController::class, 'terimaKontrakan'])->name('terimaKontrakan');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('settings/profile', [ProfileController::class, 'editProfile'])->name('settings.profile');
-    Route::post('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.profile.update');
-    Route::get('settings/password', [ProfileController::class, 'editPassword'])->name('settings.password');
-    Route::post('settings/password', [ProfileController::class, 'updatePassword'])->name('settings.password.update');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('settings/profile', [ProfileController::class, 'editProfile'])->name('settings.profile');
+//     Route::post('settings/profile', [ProfileController::class, 'updateProfile'])->name('settings.profile.update');
+//     Route::get('settings/password', [ProfileController::class, 'editPassword'])->name('settings.password');
+//     Route::post('settings/password', [ProfileController::class, 'updatePassword'])->name('settings.password.update');
+// });
 
 
 

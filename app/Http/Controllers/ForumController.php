@@ -15,6 +15,8 @@ class ForumController extends Controller
             $keyword = $request->input('keyword');
             $query->where(function ($q) use ($keyword) {
                 $q->where('provinsi', 'like', "%{$keyword}%")
+                ->orWhere('kota', 'like', "%{$keyword}%")
+                ->orWhere('kecamatan', 'like', "%{$keyword}%")
                     ->orWhere('nama_group', 'like', "%{$keyword}%");
             });
         }

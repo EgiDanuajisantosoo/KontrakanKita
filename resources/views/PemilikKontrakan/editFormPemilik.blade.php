@@ -37,7 +37,7 @@
                     <div>
                         <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                         <textarea name="deskripsi" id="deskripsi" cols="30" rows="4"
-                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg px-4 text-xs py-2 mb-2 mt-2">{{ $kontrakan->nama}}</textarea>
+                        class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg px-4 text-xs py-2 mb-2 mt-2">{{ $kontrakan->deskripsi}}</textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>

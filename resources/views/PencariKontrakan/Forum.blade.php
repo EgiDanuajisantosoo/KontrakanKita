@@ -1,6 +1,30 @@
 <x-template>
     <x-slot:title>Dashboard</x-slot:title>
     <x-slot:content>
+        @if (session('success'))
+            <div id="popup-success"
+                class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300">
+                <div
+                    class="bg-white rounded-lg shadow-lg px-6 py-3 border border-green-400 flex items-center space-x-3 max-w-sm w-full">
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-green-700 font-semibold">Sukses:</span>
+                    <span class="text-gray-700">{{ session('success') }}</span>
+                    <button onclick="document.getElementById('popup-success').style.display='none'"
+                        class="ml-auto bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+            <script>
+                setTimeout(function() {
+                    var popup = document.getElementById('popup-success');
+                    if (popup) popup.style.display = 'none';
+                }, 4000);
+            </script>
+        @endif
         <div class="content">
             {{-- <div class="headerContent bg-[#003A9D] min-h-[20vh] md:relative">
                 <h1 class="text-white p-5 text-3xl font-bold mb-4">Temukan partner yang cocok dengan anda!</h1>
@@ -301,13 +325,29 @@
                                 </div>
                                 <div class="border-t pt-4">
                                     <div class="flex justify-end gap-4">
-                                        @if (auth()->check() && $checkGroup && $group && isset($group->id) && $group->users->contains(auth()->user()->id) && $checkGroup->status == 'diterima')
+                                        @if (auth()->check() &&
+                                                $checkGroup &&
+                                                $group &&
+                                                isset($group->id) &&
+                                                $group->users->contains(auth()->user()->id) &&
+                                                $checkGroup->status == 'diterima')
                                             <a href="/forums/{{ $group->id }}"
                                                 class="text-blue-500 hover:text-blue-700">Lihat</a>
-                                            <a href="#" class="text-blue-500 hover:text-blue-700">Keluar</a>
-                                        @elseif (auth()->check() && $checkGroup && $group && isset($group->id) && $group->users->contains(auth()->user()->id) && $checkGroup->status == 'pending')
+                                            {{-- <a href="#" class="text-blue-500 hover:text-blue-700">Keluar</a> --}}
+                                        @elseif (auth()->check() &&
+                                                $checkGroup &&
+                                                $group &&
+                                                isset($group->id) &&
+                                                $group->users->contains(auth()->user()->id) &&
+                                                $checkGroup->status == 'pending')
                                             <a class="text-blue-500 hover:text-blue-700">Menunggu</a>
-                                            <a href="#" class="text-blue-500 hover:text-blue-700">Keluar</a>
+                                            <form action="{{ route('forums.keluar', $group->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="text-blue-500 hover:text-blue-700 bg-transparent border-none p-0 m-0">Keluar</button>
+                                            </form>
                                         @elseif ($group && isset($group->id))
                                             <form action="/forums/{{ $group->id }}/gabungGroup" method="POST">
                                                 @csrf
@@ -514,11 +554,22 @@
                                 </div>
                                 <div class="border-t pt-4">
                                     <div class="flex justify-end gap-4">
-                                        @if (auth()->check() && $checkGroup && $group && isset($group->id) && isset($group->users) && $group->users->contains(auth()->user()->id) && $checkGroup->status == 'diterima')
+                                        @if (auth()->check() &&
+                                                $checkGroup &&
+                                                $group &&
+                                                isset($group->id) &&
+                                                isset($group->users) &&
+                                                $group->users->contains(auth()->user()->id) &&
+                                                $checkGroup->status == 'diterima')
                                             <a href="/forums/{{ $group->id }}"
                                                 class="text-blue-500 hover:text-blue-700">Lihat</a>
-                                            <a href="#" class="text-blue-500 hover:text-blue-700">Keluar</a>
-                                        @elseif (auth()->check() && $checkGroup && $group && isset($group->id) && isset($group->users) && $group->users->contains(auth()->user()->id) && $checkGroup->status == 'pending')
+                                        @elseif (auth()->check() &&
+                                                $checkGroup &&
+                                                $group &&
+                                                isset($group->id) &&
+                                                isset($group->users) &&
+                                                $group->users->contains(auth()->user()->id) &&
+                                                $checkGroup->status == 'pending')
                                             <a class="text-blue-500 hover:text-blue-700">Menunggu</a>
                                             <a href="#" class="text-blue-500 hover:text-blue-700">Keluar</a>
                                         @elseif (isset($group->id))

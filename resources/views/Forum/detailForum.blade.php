@@ -3,6 +3,28 @@
         Detail Forum
     </x-slot:title>
     <x-slot:content>
+
+    @if (session('success'))
+        <div id="popup-success" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300">
+            <div class="bg-white rounded-lg shadow-lg px-6 py-3 border border-green-400 flex items-center space-x-3 max-w-sm w-full">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-green-700 font-semibold">Sukses:</span>
+                <span class="text-gray-700">{{ session('success') }}</span>
+                <button onclick="document.getElementById('popup-success').style.display='none'"
+                    class="ml-auto bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs">
+                    Tutup
+                </button>
+            </div>
+        </div>
+        <script>
+            setTimeout(function() {
+                var popup = document.getElementById('popup-success');
+                if (popup) popup.style.display = 'none';
+            }, 4000);
+        </script>
+    @endif
         {{-- <div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
             <div class="flex gap-4 mb-6">
                 <h2 class="text-2xl font-bold mb-4">Group: {{ $group->nama_group }}</h2>
@@ -484,15 +506,15 @@
                             @if (isset($transaksiDp))
                                 @php
                                     $status = $transaksiDp->status;
-                                    $statusPelunasan = $tranasksiPelunasan->status;
+                                    $statusPelunasan = isset($transaksiPelunasan) ? $transaksiPelunasan->status : null;
                                 @endphp
 
                                 {{-- Form Pembayaran --}}
-                                @if ($transaksiDp->status == 'pending' || $transaksiPelunasan->status == 'pending')
+                                @if ($transaksiDp->status == 'menunggu' || (isset($transaksiPelunasan) && $transaksiPelunasan->status == 'menunggu'))
                                     <div
                                         class="max-w-xl mx-auto w-full p-6 bg-white rounded-2xl shadow-md inset-shadow-xs space-y-6">
                                         <h2 class="text-2xl font-bold text-gray-800">
-                                            {{ $status === 'pending' ? 'Pembayaran Dp Kontrakan' : 'Pelunasan Pembayaran Kontrakan' }}
+                                            {{ $status === 'menunggu' ? 'Pembayaran Dp Kontrakan' : 'Pelunasan Pembayaran Kontrakan' }}
                                         </h2>
                                         <!-- Info Kontrakan -->
                                         <div class="border rounded-xl p-4 bg-gray-50">
@@ -518,7 +540,7 @@
                                                 </div>
                                             @endif
                                             <hr />
-                                            @if ($booking->lama_mengontrak == 6 && $groupCheck->status === 'pending')
+                                            @if ($booking->lama_mengontrak == 6 && $groupCheck->status === 'menunggu')
                                                 <div class="flex justify-between font-bold">
                                                     <span>Total</span>
                                                     <span>Rp{{ number_format($booking->kontrakan->dp_harga / 2 / $groupUser->count(), 0, ',', '.') }}</span>
@@ -531,7 +553,7 @@
                                                 Pembayaran</label>
                                             <select
                                                 class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                                <option>{{ $status === 'pending' ? 'DP' : 'Bayar Penuh' }}</option>
+                                                <option>{{ $status === 'menunggu' ? 'DP' : 'Bayar Penuh' }}</option>
                                             </select>
                                         </div>
                                         <!-- Metode Pembayaran -->
@@ -585,7 +607,7 @@
                                     <h2 class="text-2xl font-bold text-gray-800">Detail Pembayaran</h2>
                                     @php
                                         $detailStatus = [
-                                            'pending' => 'bg-red-100',
+                                            'ditolak' => 'bg-red-100',
                                             'menunggu' => 'bg-yellow-100',
                                             'lunas' => 'bg-green-100',
                                         ];

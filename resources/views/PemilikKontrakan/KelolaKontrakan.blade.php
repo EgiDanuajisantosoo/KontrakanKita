@@ -1,6 +1,28 @@
 <x-template>
     <x-slot:title>Dashboard</x-slot:title>
     <x-slot:content>
+
+         @if (session('success'))
+        <div id="popup-success" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300">
+            <div class="bg-white rounded-lg shadow-lg px-6 py-3 border border-green-400 flex items-center space-x-3 max-w-sm w-full">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-green-700 font-semibold">Sukses:</span>
+                <span class="text-gray-700">{{ session('success') }}</span>
+                <button onclick="document.getElementById('popup-success').style.display='none'"
+                    class="ml-auto bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs">
+                    Tutup
+                </button>
+            </div>
+        </div>
+        <script>
+            setTimeout(function() {
+                var popup = document.getElementById('popup-success');
+                if (popup) popup.style.display = 'none';
+            }, 4000);
+        </script>
+    @endif
         <div class="content">
             <div class="headerContent bg-[#003A9D] min-h-auto text-center md:flex md:justify-between md:relative ">
                 <h1 class="text-white p-8 text-3xl font-bold ">Ayo Kelola Kontrakanmu!</h1>
@@ -29,7 +51,7 @@
                         @endif
                         @foreach ($kontrakan as $data)
                             <div class="bg-white rounded-lg shadow relative pb-10">
-                                <a href="DetailKontrakan">
+                                <a href="/detailKontrakan/{{ $data->id }}">
                                     <img src="{{ asset('storage/' . $data->banner) }}" class="w-full rounded-t-lg"
                                         alt="">
                                     <div class="text p-3 md:p-5">

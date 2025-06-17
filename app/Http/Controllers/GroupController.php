@@ -67,9 +67,8 @@ class GroupController extends Controller
             if ($request->hasFile('foto_group')) {
                 $file = $request->file('foto_group');
                 $filename = time() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('images'), $filename);
-                $request->merge(['foto_group' => $filename]);
-                $group->foto_group = $filename;
+                $path = $file->storeAs('images', $filename, 'public');
+                $group->foto_group = $path;
                 $group->save();
             }
 
@@ -82,7 +81,7 @@ class GroupController extends Controller
         }
 
 
-        return redirect('/forums/' . $group->id);
+        return redirect('/forums/' . $group->id)->with('success', 'Forum created successfully.');
     }
 
     public function show($id)
@@ -94,7 +93,7 @@ class GroupController extends Controller
         $booking = Booking::with('kontrakan')->where('group_id', $id)->first();
         $transaksiDp = TransaksiDp::where('user_id', Auth::id())->first();
         $tranasksiPelunasan = TransaksiPelunasan::where('user_id', Auth::id())->first();
-
+        // dd($transaksiDp);
         // dd(optional($booking)->count());
         $transaksiPelunasan = TransaksiPelunasan::where('user_id', Auth::id())->first();
         // dd($transaksiDp);
@@ -135,7 +134,7 @@ class GroupController extends Controller
         }
 
 
-        return redirect("/forums")->with('success', 'User added');
+        return redirect("/forums")->with('success', 'Berhasil mengirim permintaan untuk masuk group forum');
     }
 
     public function sendMessage(Request $request, $id)
@@ -167,5 +166,16 @@ class GroupController extends Controller
         }
 
         return redirect("/forums/{$groupUser->group_id}")->with('success', 'User accepted');
+    }
+
+    public function keluarGroup($id)
+    {
+        $groupUser = GroupUser::where('user_id', Auth::id())->where('group_id', $id)->first();
+        if ($groupUser) {
+            $groupUser->delete();
+            return redirect('/forums')->with('success', 'Anda telah keluar dari grup.');
+        } else {
+            return redirect('/forums')->withErrors(['user' => 'Anda tidak terdaftar di grup ini.']);
+        }
     }
 }

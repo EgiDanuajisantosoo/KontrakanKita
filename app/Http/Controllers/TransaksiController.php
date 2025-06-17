@@ -30,7 +30,7 @@ class TransaksiController extends Controller
         ]);
 
 
-        return redirect()->back()->with('success', 'Bukti transfer berhasil dikirim');
+        return redirect()->back()->with('success', 'Berhasil mengirim bukti pembayaran, silahkan menunggu untuk di acc');
     }
 
     public function kirimPelunasan(Request $request)
@@ -52,6 +52,6 @@ class TransaksiController extends Controller
         ]);
 
 
-        return redirect()->back()->with('success', 'Bukti transfer berhasil dikirim');
+        return redirect()->back()->with('success', 'Berhasil mengirim bukti pembayaran, silahkan menunggu untuk di acc');
     }
 }

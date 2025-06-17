@@ -121,6 +121,16 @@ class KontrakanController extends Controller
         return view('User.DetailKontrakanSementara', compact('booking','detailKontrakan', 'galleryKontrakan', 'type', 'group'));
     }
 
+    public function showDetail($id)
+    {
+        $type = 'nonForum';
+        $detailKontrakan = Kontrakan::with('fasilitas', 'user')->findOrFail($id);
+        $galleryKontrakan = GaleryKontrakan::where('kontrakan_id', $id)->get();
+        $group = Auth::check() ? Auth::user()->groups->first() : null;
+        $booking = Booking::where('user_id', Auth::id())->first();
+        return view('User.DetailKontrakanSementara', compact('booking','detailKontrakan', 'galleryKontrakan', 'type', 'group'));
+    }
+
     public function showForum($id)
     {
         $type = 'forum';
@@ -158,7 +168,7 @@ class KontrakanController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('forums.show', $group)->with('success', 'Booking request sent successfully.');
+        return redirect()->route('forums.show', $group)->with('success', 'Berhasil mengirim permintaan booking ke pemilik kontrakan, silahkan menunggu di acc');
     }
 
     public function bookingNonForum(Request $request, $id)
@@ -176,7 +186,7 @@ class KontrakanController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('detail.kontrakanNonForum', $id)->with('success', 'Booking request sent successfully.');
+        return redirect()->route('detail.kontrakanNonForum', $id)->with('success', 'Berhasil mengirim permintaan booking ke pemilik kontrakan, silahkan menunggu di acc');
     }
 
     public function edit($id)
@@ -304,14 +314,16 @@ class KontrakanController extends Controller
     {
         $query = Kontrakan::query();
 
+        $query->where('status', 'tersedia');
+
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('provinsi', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('kota', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('alamat', 'like', '%' . $request->keyword . '%');
+            $q->where('nama', 'like', '%' . $request->keyword . '%')
+                ->orWhere('provinsi', 'like', '%' . $request->keyword . '%')
+                ->orWhere('kota', 'like', '%' . $request->keyword . '%')
+                ->orWhere('kecamatan', 'like', '%' . $request->keyword . '%')
+                ->orWhere('kelurahan', 'like', '%' . $request->keyword . '%')
+                ->orWhere('alamat', 'like', '%' . $request->keyword . '%');
             });
         }
 
